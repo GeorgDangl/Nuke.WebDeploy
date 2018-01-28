@@ -1,10 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.Deployment" Version="3.6.0" />
+    <PackageReference Include="Nuke.Common" Version="0.1.458" />
+  </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\*" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\DefaultAppOffline.html" />
+  </ItemGroup>
+
 </Project>
