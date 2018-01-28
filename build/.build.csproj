@@ -20,7 +20,7 @@
     <PackageReference Include="Nuke.Common" Version="$(NukeVersion)" />
     <PackageReference Include="GitVersion.CommandLine" Version="4.0.0-beta0011" />
     <PackageReference Include="xunit.runner.console" Version="2.4.0-beta1-build3919" />
-    <PackageReference Include="Nuke.WebDocu" Version="1.0.0-build-1" />
+    <PackageReference Include="Nuke.WebDocu" Version="1.0.0-build-2" />
   </ItemGroup>
 
   <ItemGroup>
