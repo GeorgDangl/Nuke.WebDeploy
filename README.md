@@ -10,6 +10,15 @@ to an IIS or Azure app. Contributions are welcome!
 
 The code is based on [Cake.WebDeploy](https://github.com/SharpeRAD/Cake.WebDeploy).
 
+[Link to documentation](https://docs.dangl-it.com/Projects/Nuke.WebDeploy).
+
+## CI Builds
+
+All builds are available on MyGet:
+
+    https://www.myget.org/F/dangl/api/v2
+    https://www.myget.org/F/dangl/api/v3/index.json
+
 ## Example
 
 ```
