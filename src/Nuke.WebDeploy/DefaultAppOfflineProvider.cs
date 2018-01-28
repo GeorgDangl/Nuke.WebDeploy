@@ -14,6 +14,7 @@ namespace Nuke.WebDeploy
                 {
                     return "App Temporary Offline for Maintenance";
                 }
+
                 using (var streamReader = new StreamReader(templateStream))
                 {
                     var template = streamReader.ReadToEnd();
@@ -21,6 +22,5 @@ namespace Nuke.WebDeploy
                 }
             }
         }
-
     }
 }
