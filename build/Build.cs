@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Nuke.Common.Tools.DocFx;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Core;
+using Nuke.WebDocu;
+using static Nuke.WebDocu.WebDocuTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.Core.IO.FileSystemTasks;
 using static Nuke.Core.IO.PathConstruction;
@@ -15,6 +17,9 @@ using static Nuke.Common.Tools.Xunit.XunitTasks;
 using Nuke.Common.Tools.Xunit;
 using Nuke.Core.Utilities.Collections;
 using static Nuke.Common.Tools.DocFx.DocFxTasks;
+using Nuke.Core.Tooling;
+using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 
 class Build : NukeBuild
 {
@@ -120,46 +125,18 @@ class Build : NukeBuild
         .Requires(() => DocuApiEndpoint)
         .Executes(() =>
         {
-            // Get Version
-            var packageVersion = GlobFiles(OutputDirectory, "*.nupkg").NotEmpty()
+            WebDocu(s =>
+            {
+                var packageVersion = GlobFiles(OutputDirectory, "*.nupkg").NotEmpty()
                 .Where(x => !x.EndsWith("symbols.nupkg"))
                 .Select(Path.GetFileName)
-                .Select(GetVersionFromPackageFilename)
+                .Select(x => WebDocuTasks.GetVersionFromNuGetPackageFilename(x, "Nuke.WebDeploy"))
                 .First();
 
-            // Create zip package
-            if (File.Exists(OutputDirectory / "docs.zip"))
-            {
-                File.Delete(OutputDirectory / "docs.zip");
-            }
-
-            ZipFile.CreateFromDirectory(OutputDirectory / "docs", OutputDirectory / "docs.zip");
-
-            // Upload package to docs
-            UploadToDanglDocu(packageVersion).ConfigureAwait(false).GetAwaiter().GetResult();
+                return s.SetDocuApiEndpoint(DocuApiEndpoint)
+                .SetDocuApiKey(DocuApiKey)
+                .SetSourceDirectory(OutputDirectory / "docs")
+                .SetVersion(packageVersion);
+            });
         });
-
-    static string GetVersionFromPackageFilename(string packageFilename)
-    {
-        return packageFilename.Replace(".nupkg", string.Empty)
-            .Replace("Nuke.WebDeploy.", string.Empty);
-    }
-
-    async Task UploadToDanglDocu(string version)
-    {
-        using (var docsStream = File.OpenRead(OutputDirectory / "docs.zip"))
-        {
-            var request = new HttpRequestMessage(HttpMethod.Post, DocuApiEndpoint);
-            var requestContent = new MultipartFormDataContent();
-            requestContent.Add(new StringContent(DocuApiKey), "ApiKey");
-            requestContent.Add(new StringContent(version), "Version");
-            requestContent.Add(new StreamContent(docsStream), "ProjectPackage", "docs.zip");
-            request.Content = requestContent;
-            var response = await new HttpClient().SendAsync(request);
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception("Upload failed");
-            }
-        }
-    }
 }
