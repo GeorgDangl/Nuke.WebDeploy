@@ -10,7 +10,7 @@ namespace Nuke.WebDeploy.Tests
             var defaultAppOffline = DefaultAppOfflineProvider.DefaultAppOffline;
             Assert.False(string.IsNullOrWhiteSpace(defaultAppOffline));
             Assert.Contains("<html", defaultAppOffline);
-            Assert.Contains("App Offline - Maintenancel", defaultAppOffline);
+            Assert.Contains("App Offline - Maintenance", defaultAppOffline);
         }
     }
 }
