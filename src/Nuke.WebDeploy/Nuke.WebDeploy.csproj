@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
+    <Description>WebDeploy for NUKE Build</Description>
     <VersionPrefix>1.0.0</VersionPrefix>
     <VersionSuffix Condition=" '$(GIT_BRANCH)' == 'origin/dev'">build-$(BUILD_NUMBER)</VersionSuffix>
     <Authors>Georg Dangl</Authors>
     <GeneratePackageOnBuild Condition="'$(Configuration)'=='Release'">True</GeneratePackageOnBuild>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Copyright>(c) $([System.DateTime]::Now.Year) Georg Dangl</Copyright>
     <AssemblyName>Nuke.WebDeploy</AssemblyName>
     <PackageProjectUrl>https://github.com/GeorgDangl/Nuke.WebDeploy</PackageProjectUrl>
