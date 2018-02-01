@@ -47,6 +47,10 @@
       "_enableSearch": true,
       "_gitUrlPattern": "github"
     },
-    "dest": "output/docs"
+    "dest": "output/docs",
+    "template": [
+      "default",
+      "template"
+    ]
   }
 }
