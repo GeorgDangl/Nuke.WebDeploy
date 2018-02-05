@@ -125,18 +125,15 @@ class Build : NukeBuild
         .Requires(() => DocuApiEndpoint)
         .Executes(() =>
         {
-            WebDocu(s =>
-            {
-                var packageVersion = GlobFiles(OutputDirectory, "*.nupkg").NotEmpty()
+            var packageVersion = GlobFiles(OutputDirectory, "*.nupkg").NotEmpty()
                 .Where(x => !x.EndsWith("symbols.nupkg"))
                 .Select(Path.GetFileName)
-                .Select(x => WebDocuTasks.GetVersionFromNuGetPackageFilename(x, "Nuke.WebDeploy"))
+                .Select(x => GetVersionFromNuGetPackageFilename(x, "Nuke.WebDeploy"))
                 .First();
-
-                return s.SetDocuApiEndpoint(DocuApiEndpoint)
+            WebDocu(s => s.SetDocuApiEndpoint(DocuApiEndpoint)
                 .SetDocuApiKey(DocuApiKey)
                 .SetSourceDirectory(OutputDirectory / "docs")
-                .SetVersion(packageVersion);
-            });
+                .SetVersion(packageVersion)
+            );
         });
 }
