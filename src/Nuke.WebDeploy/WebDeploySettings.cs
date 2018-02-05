@@ -32,6 +32,6 @@ namespace Nuke.WebDeploy
         /// </summary>
         public virtual bool WrapAppOffline { get; internal set; }
 
-        public virtual string AppOfflineHtmlTemplate { get; internal set; } = DefaultAppOfflineProvider.DefaultAppOffline;
+        public virtual string AppOfflineHtmlTemplate { get; internal set; } = BaseAppOfflineTemplateProvider.DefaultAppOfflineTemplate;
     }
 }

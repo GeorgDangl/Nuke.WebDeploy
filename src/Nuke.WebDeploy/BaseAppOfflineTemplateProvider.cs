@@ -2,13 +2,13 @@
 
 namespace Nuke.WebDeploy
 {
-    public static class DefaultAppOfflineProvider
+    public static class BaseAppOfflineTemplateProvider
     {
-        public static string DefaultAppOffline => GetDefaultAppOffline();
+        public static string DefaultAppOfflineTemplate => GetDefaultAppOfflineTemplate();
 
-        private static string GetDefaultAppOffline()
+        private static string GetDefaultAppOfflineTemplate()
         {
-            using (var templateStream = typeof(DefaultAppOfflineProvider).Assembly.GetManifestResourceStream("Nuke.WebDeploy.Resources.DefaultAppOffline.html"))
+            using (var templateStream = typeof(BaseAppOfflineTemplateProvider).Assembly.GetManifestResourceStream("Nuke.WebDeploy.Resources.DefaultAppOffline.html"))
             {
                 if (templateStream == null)
                 {
