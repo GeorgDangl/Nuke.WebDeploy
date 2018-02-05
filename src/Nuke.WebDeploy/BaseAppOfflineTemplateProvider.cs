@@ -2,7 +2,7 @@
 
 namespace Nuke.WebDeploy
 {
-    public static class BaseAppOfflineTemplateProvider
+    internal static class BaseAppOfflineTemplateProvider
     {
         public static string DefaultAppOfflineTemplate => GetDefaultAppOfflineTemplate();
 
