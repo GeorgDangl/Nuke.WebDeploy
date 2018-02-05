@@ -3,7 +3,7 @@ using Microsoft.Web.Deployment;
 
 namespace Nuke.WebDeploy
 {
-    public static class WebDeployOptionsFactory
+    internal static class WebDeployOptionsFactory
     {
         public static DeploymentBaseOptions GetDestinationOptions(WebDeploySettings settings)
         {
