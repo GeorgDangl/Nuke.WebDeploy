@@ -1,9 +1,5 @@
-﻿using System;
-using System.IO;
-using System.IO.Compression;
+﻿using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Nuke.Common.Tools.DocFx;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Core;
@@ -17,9 +13,7 @@ using static Nuke.Common.Tools.Xunit.XunitTasks;
 using Nuke.Common.Tools.Xunit;
 using Nuke.Core.Utilities.Collections;
 using static Nuke.Common.Tools.DocFx.DocFxTasks;
-using Nuke.Core.Tooling;
-using System.Diagnostics.CodeAnalysis;
-using JetBrains.Annotations;
+using static Nuke.CodeGeneration.CodeGenerator;
 
 class Build : NukeBuild
 {
@@ -48,8 +42,19 @@ class Build : NukeBuild
             DotNetRestore(s => DefaultDotNetRestore);
         });
 
-    Target Compile => _ => _
+    Target Generate => _ => _
         .DependsOn(Restore)
+        .Executes(() =>
+        {
+            GenerateCode(
+                metadataDirectory: RootDirectory / "src" / "Nuke.WebDeploy" / "MetaData",
+                generationBaseDirectory: RootDirectory / "src" / "Nuke.WebDeploy",
+                baseNamespace: "Nuke.WebDeploy"
+            );
+        });
+
+    Target Compile => _ => _
+        .DependsOn(Generate)
         .Executes(() =>
         {
             DotNetBuild(s => DefaultDotNetBuild);
