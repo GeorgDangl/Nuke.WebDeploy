@@ -3,40 +3,52 @@ using Nuke.Core.Tooling;
 
 namespace Nuke.WebDeploy
 {
-    public class WebDeployTasks
+    public static partial class WebDeployTasks
     {
-        public static void WebDeploy(Configure<WebDeploySettings> configurator)
+        private static IProcess StartProcess(WebDeploySettings settings, ProcessSettings processSettings = null)
         {
-            var settings = configurator.InvokeSafe(new WebDeploySettings());
-            using (var appOfflineWrapper = new AppOfflineWrapper(settings))
+            try
             {
-                var sourceOptions = WebDeployOptionsFactory.GetSourceOptions(settings);
-                var destinationOptions = WebDeployOptionsFactory.GetDestinationOptions(settings);
-                destinationOptions.Trace += WebDeployLogger.DestinationOptions_Trace;
-                var syncOptions = WebDeployOptionsFactory.GetSyncOptions(settings);
-                var sourceProvider = DeploymentWellKnownProvider.IisApp;
-                var destinationProvider = DeploymentWellKnownProvider.IisApp;
-                using (var deploymentObject = DeploymentManager.CreateObject(sourceProvider, settings.SourcePath, sourceOptions))
+                using (var appOfflineWrapper = new AppOfflineWrapper(settings))
                 {
-                    if (settings.Parameters != null)
+                    var sourceOptions = WebDeployOptionsFactory.GetSourceOptions(settings);
+                    var destinationOptions = WebDeployOptionsFactory.GetDestinationOptions(settings);
+                    destinationOptions.Trace += WebDeployLogger.DestinationOptions_Trace;
+                    var syncOptions = WebDeployOptionsFactory.GetSyncOptions(settings);
+                    var sourceProvider = DeploymentWellKnownProvider.IisApp;
+                    var destinationProvider = DeploymentWellKnownProvider.IisApp;
+                    using (var deploymentObject = DeploymentManager.CreateObject(sourceProvider, settings.SourcePath, sourceOptions))
                     {
-                        foreach (var kv in settings.Parameters)
-                        {
-                            if (deploymentObject.SyncParameters.Contains(kv.Key))
-                            {
-                                deploymentObject.SyncParameters[kv.Key].Value = kv.Value;
-                            }
-                            else
-                            {
-                                deploymentObject.SyncParameters.Add(new DeploymentSyncParameter(kv.Key, kv.Key, "", "")
-                                {
-                                    Value = kv.Value
-                                });
-                            }
-                        }
+                        AppendCustomParameters(settings, deploymentObject);
+                        deploymentObject.SyncTo(destinationProvider, settings.SiteName, destinationOptions, syncOptions);
                     }
 
-                    deploymentObject.SyncTo(destinationProvider, settings.SiteName, destinationOptions, syncOptions);
+                    return new WebDeployProcess(true);
+                }
+            }
+            catch
+            {
+                return new WebDeployProcess(false);
+            }
+        }
+
+        private static void AppendCustomParameters(WebDeploySettings settings, DeploymentObject deploymentObject)
+        {
+            if (settings.Parameters != null)
+            {
+                foreach (var kv in settings.Parameters)
+                {
+                    if (deploymentObject.SyncParameters.Contains(kv.Key))
+                    {
+                        deploymentObject.SyncParameters[kv.Key].Value = kv.Value;
+                    }
+                    else
+                    {
+                        deploymentObject.SyncParameters.Add(new DeploymentSyncParameter(kv.Key, kv.Key, "", "")
+                        {
+                            Value = kv.Value
+                        });
+                    }
                 }
             }
         }
