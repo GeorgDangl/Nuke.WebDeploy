@@ -22,12 +22,13 @@ namespace Nuke.WebDeploy
 
         private void CreateAppOffline()
         {
-            if (!_settings.WrapAppOffline)
+            if (!(_settings.WrapAppOffline ?? false))
             {
                 return;
             }
 
             GenerateTempAppOffline();
+            // ReSharper disable once RedundantArgumentDefaultValue -> For clarity
             CreateOrDeleteAppOffline(true);
         }
 
@@ -39,7 +40,7 @@ namespace Nuke.WebDeploy
 
         private void RemoveAppOffline()
         {
-            if (!_settings.WrapAppOffline)
+            if (!(_settings.WrapAppOffline ?? false))
             {
                 return;
             }
@@ -50,7 +51,7 @@ namespace Nuke.WebDeploy
 
         private void CreateOrDeleteAppOffline(bool create = true)
         {
-            var sourceOptions = WebDeployOptionsFactory.GetSourceOptions(_settings);
+            var sourceOptions = WebDeployOptionsFactory.GetSourceOptions();
             var destinationOptions = WebDeployOptionsFactory.GetDestinationOptions(_settings);
             destinationOptions.Trace += WebDeployLogger.DestinationOptions_Trace;
             var syncOptions = WebDeployOptionsFactory.GetSyncOptions(_settings);

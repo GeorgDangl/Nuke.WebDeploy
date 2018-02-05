@@ -9,9 +9,10 @@ namespace Nuke.WebDeploy
         {
             try
             {
+                // ReSharper disable once UnusedVariable
                 using (var appOfflineWrapper = new AppOfflineWrapper(settings))
                 {
-                    var sourceOptions = WebDeployOptionsFactory.GetSourceOptions(settings);
+                    var sourceOptions = WebDeployOptionsFactory.GetSourceOptions();
                     var destinationOptions = WebDeployOptionsFactory.GetDestinationOptions(settings);
                     destinationOptions.Trace += WebDeployLogger.DestinationOptions_Trace;
                     var syncOptions = WebDeployOptionsFactory.GetSyncOptions(settings);

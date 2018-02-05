@@ -24,7 +24,7 @@ namespace Nuke.WebDeploy
 
         public IEnumerable<Output> Output => Enumerable.Empty<Output>();
 
-        public int ExitCode { get; };
+        public int ExitCode { get; }
 
         public void Kill()
         {

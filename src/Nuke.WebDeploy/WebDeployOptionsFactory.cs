@@ -12,12 +12,12 @@ namespace Nuke.WebDeploy
             options.ComputerName = settings.PublishUrl;
             options.UserName = settings.Username;
             options.Password = settings.Password;
-            options.RetryAttempts = settings.RetryAttempts;
-            options.RetryInterval = settings.RetryInterval;
+            options.RetryAttempts = settings.RetryAttempts ?? default;
+            options.RetryInterval = settings.RetryInterval ?? default;
             return options;
         }
 
-        public static DeploymentBaseOptions GetSourceOptions(WebDeploySettings settings)
+        public static DeploymentBaseOptions GetSourceOptions()
         {
             var options = new DeploymentBaseOptions();
             return options;
@@ -26,9 +26,9 @@ namespace Nuke.WebDeploy
         public static DeploymentSyncOptions GetSyncOptions(WebDeploySettings settings)
         {
             var options = new DeploymentSyncOptions();
-            options.DoNotDelete = settings.EnableDoNotDeleteRule;
-            options.WhatIf = settings.ShowWhatIf;
-            if (settings.EnableAppOfflineRule)
+            options.DoNotDelete = settings.EnableDoNotDeleteRule ?? false;
+            options.WhatIf = settings.ShowWhatIf ?? false;
+            if (settings.EnableAppOfflineRule ?? false)
             {
                 var appOfflineRule = GetRuleByName("AppOffline");
                 options.Rules.Add(appOfflineRule);
