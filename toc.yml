@@ -1,5 +1,5 @@
 - name: Home
-  href: README.md
+  href: index.md
 - name: API Documentation
   href: api/
 - name: DanglDocu
