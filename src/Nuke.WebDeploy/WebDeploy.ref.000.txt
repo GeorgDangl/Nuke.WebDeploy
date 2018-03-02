@@ -1,0 +1,221 @@
+
+<!DOCTYPE HTML>
+<!--[if IE 7]><html class="ie7" lang="en"><![endif]-->
+<!--[if IE 8]><html class="ie8" lang="en"><![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+	<!-- build date: Tue, 27 Feb 2018 16:00:07 GMT -->
+	<meta charset="UTF-8">
+	<title>
+		Web Deploy 3.6 : The Official Microsoft IIS Site
+	</title>
+	<!--[if IE]><script src='https://www-iis.azureedge.net/v-2017-12-07-003/scripts-bundle/html5.js'></script><![endif]-->
+	
+<meta name="description" content="Web Deploy (msdeploy) simplifies deployment of Web applications and Web sites to IIS servers. Administrators can use Web Deploy to synchronize IIS servers or to migrate to newer versions of IIS. We..." />
+	
+	<link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+	<link rel="apple-touch-icon-precomposed" href="/touch-icon-iphone-precomposed.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/touch-icon-ipad-precomposed.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/touch-icon-iphone4-precomposed.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/touch-icon-ipad3-precomposed.png" />
+	<meta name="application-name" content="The Official Microsoft IIS Site" />
+	<meta name="msapplication-TileColor" content="#474747" />
+	<meta name="msapplication-TileImage" content='https://www-iis.azureedge.net/v-2017-12-07-003/images/iis_tile.png' />
+
+	<!-- Anti-Clickjacking script -->
+	<style id="antiClickjack">body{display:none !important;}</style>
+	<script type="text/javascript">if (self === top) { var antiClickjack = document.getElementById("antiClickjack"); antiClickjack.parentNode.removeChild(antiClickjack) } else top.location = self.location;</script>
+    	<script>var antiForgeryToken = "Xl7fp8zjmGtSAxkFece2hSiFY8TOamP-W9Q-WvaKHzBUpTA04puH8zPLdvgN9q4e9lwpq4NvVJaxlSdL-P6fTiFNjJ81:L9Uh4yY3uPgayagPBvI4S0kAYZfrnzX2tMlpH95CT4g_ETEq-2D3UvZ8rEPDWCcxt7JMm-CLdjGNx3JTjb-rucQdLEk1";</script>
+	
+  <link href='https://www-iis.azureedge.net/v-2017-12-07-003/css-bundle/downloads.css' rel="stylesheet" type="text/css" media="all" />   
+
+
+	<script type="text/javascript">var isConsentRequired = true;</script>
+
+    	<script src="https://uhf.microsoft.com/mscc/statics/mscc-0.4.0.min.js"></script><link rel="stylesheet" type="text/css" href="https://uhf.microsoft.com/mscc/statics/mscc-0.4.0.min.css">
+</head>
+<body class=''>
+	
+	
+        	<div><div id='msccBanner' dir='ltr' data-site-name='www.iis.net' data-mscc-version='0.4.0' data-nver='aspnet-2.0.8' data-sver='0.1.2' class='cc-banner' role='alert'><div class='cc-container'><svg class='cc-icon cc-v-center' x='0px' y='0px' viewBox='0 0 44 44' height='30px' fill='none' stroke='currentColor'><circle cx='22' cy='22' r='20' stroke-width='2'></circle><line x1='22' x2='22' y1='18' y2='33' stroke-width='3'></line><line x1='22' x2='22' y1='12' y2='15' stroke-width='3'></line></svg> <span class='cc-v-center cc-text'>This site uses cookies for analytics, personalized content and ads. By continuing to browse this site, you agree to this use.</span> <a href='https://go.microsoft.com/fwlink/?linkid=845480' aria-label='Learn more about Microsoft&#39;s Cookie Policy' id='msccLearnMore' class='cc-link cc-v-center cc-float-right' data-mscc-ic='false'>Learn more</a></div></div></div>
+    	<!--<div style="background-color:#fc0;padding:10px;font-size:16px;text-align:center;">Edit me from backoffice - Raw > Banner</div>-->
+	<header id="header-site" class='full-width '>
+		<script type="text/javascript">var currentUsername = '';</script><ul id="nav-user"><li><a href="https://login.iis.net/login/signin.aspx?ReturnUrl=https://www.iis.net/downloads/microsoft/web-deploy">Sign In</a></li><li><a href="https://login.iis.net/login/createuser.aspx?ReturnUrl=https://www.iis.net/downloads/microsoft/web-deploy">Join</a></li></ul>
+		<p id="search-site"><input type="text" name="search" id="txt-search" placeholder="Search all of IIS.NET" /><button type="submit" id="btn-search-submit"><span class="icon icon-search">Search</span></button></p><nav id="nav-primary"><a id="logo" href="https://www.iis.net/">IIS</a><ul><li><a href="https://www.iis.net/">
+        Home
+      </a></li><li><a href="https://docs.microsoft.com/en-us/IIS-Administration/">
+        Manage
+      </a></li><li><a href="https://www.iis.net/downloads" class="current">
+					Downloads
+				</a>
+		<ul><li><a href="/downloads">All Downloads</a></li><li><a href="/downloads/community">Community Contributed Downloads</a></li> <li><a href="/downloads/microsoft" class="current">Microsoft Supported Downloads</a></li> <li><a href="https://go.microsoft.com/fwlink/?LinkID=145510">Free Web Platform Installer</a></li> </ul>
+		</li><li><a href="https://www.iis.net/learn">
+      Learn
+  </a>
+		
+		</li><li><a href="https://www.iis.net/configreference">
+			Reference
+		</a></li>
+		<li id="solutions-menu"><a href="javascript:;">Solutions</a> 
+					<div>
+                        <ul>
+                            <li>Technologies</li>
+                            <li><a href="http://msdn.microsoft.com/en-us/netframework/default.aspx">.NET Framework</a></li>
+                            <li><a href="//www.asp.net">ASP.NET</a></li>
+                            <li><a href="https://php.iis.net/">PHP</a></li>
+                            <li><a href="https://www.iis.net/media">Media</a></li>
+                            <li><a href="http://www.microsoft.com/windowsserver">Windows Server</a></li>
+                            <li><a href="http://www.microsoft.com/SQL/default.mspx">SQL Server</a></li>
+                            <li><a href="http://www.microsoft.com/web/gallery">Web App Gallery</a></li>
+                            <li><a href="http://azure.microsoft.com/">Microsoft Azure</a></li>
+                        </ul>
+                        <ul>
+                            <li>Tools</li>
+                            <li><a href="http://www.microsoft.com/visualstudio">Visual Studio</a></li>
+                            <li><a href="http://www.microsoft.com/expression/">Expression Studio</a></li>
+                            <li><a href="http://www.microsoft.com/ie/">Windows Internet Explorer</a></li>
+                            <li><a href="https://code.visualstudio.com/">Visual Studio Code</a></li>
+                            <li><a href="http://www.microsoft.com/web/downloads/platform.aspx">Web Platform Installer</a></li>
+                        </ul>
+						<ul>
+							<li>Get Help:</li>
+							<li><a href="https://forums.iis.net/">Ask a Question in our Forums</a></li>
+							<li><a href="https://www.iis.net/contact">More Help Resources</a></li>
+						</ul>
+					</div>
+				</li>
+		<li><a href="https://blogs.iis.net/">
+				Blogs
+			</a></li><li class="last-child"><a href="https://forums.iis.net/">Forums</a></li></ul></nav>
+	</header>
+	<div class="full-width">
+		
+  
+  <nav id="breadcrumb"><p><a href="/">Home</a><a href="/downloads">Downloads</a><a href="/downloads/microsoft">Microsoft Supported Downloads</a><span>Web Deploy 3.6</span></p></nav>
+  <div class="page two-right">    
+    <section class="col-article">      
+      <article><span itemprop="video" itemscope="" itemtype="http://schema.org/VideoObject"><header class="header-ctas"><h1 itemprop="name">Web Deploy 3.6</h1><p><span class="icon-left icon-windows">Windows</span><span>This is a <a href="/downloads/microsoft"><span itemprop="author">Microsoft</span> Supported Download</a>   |   Works With: IIS 7, IIS 7.5, IIS 8, IIS 8.5, IIS 10</span></p></header><aside class="download-ctas"><p><a href="https://www.microsoft.com/en-us/download/details.aspx?id=43717" class="btn">Install this extension</a> 
+      or view <a href="#additionalDownloads">additional downloads</a> 
+    </p></aside><h2>Overview</h2><p><div class="module-vid-player"><meta itemprop="contentURL" content="http://media.ch9.ms/ch9/9458/3fc0bd4e-3fa8-4427-b2e1-95688fa49458/WebDeploy_high.mp4" /><meta itemprop="thumbnailUrl" content="http://media.ch9.ms/ch9/9458/3fc0bd4e-3fa8-4427-b2e1-95688fa49458/WebDeploy_960.jpg" /><meta itemprop="embedUrl" content="https://channel9.msdn.com/Blogs/IIS-NET-Site-Videos/Web-Deploy/player?format=html5" /><a href="javascript:;" class="video-link" data-iframe="https://channel9.msdn.com/Blogs/IIS-NET-Site-Videos/Web-Deploy/player?format=html5#autoplay"><img src="http://media.ch9.ms/ch9/9458/3fc0bd4e-3fa8-4427-b2e1-95688fa49458/WebDeploy_960.jpg" width="400" /><span class="play-button" /></a></div>Web Deploy (msdeploy) simplifies deployment of Web applications and Web sites to IIS servers. Administrators can use Web Deploy to synchronize IIS servers or to migrate to newer versions of IIS. Web Deploy Tool also enables administrators and delegated users to use IIS Manager to deploy ASP.NET and PHP applications to an IIS server.</p><h2>Package, archive and deploy Web applications more easily</h2>
+<p>Web Deploy empowers Visual Studio to help developers streamline the deployment of Web applications to Microsoft IIS Web servers or to Microsoft Azure Websites. In addition, integration with Web Platform Installer allows developers to simply and easily install community web applications.</p>
+<p>Web Deploy enables you to package your Web application content, configuration, databases and any other artifacts like registry, GAC assemblies etc., which can be used for storage or redeployment. If the package needs to be redeployed to a different environment, configuration values within the package can be parameterized during deployment without requiring modifications to the packages themselves. Once created, these packages can be deployed using Web Deploy cmdline or IIS Manager without requiring administrative privileges.</p>
+<h2>Migrate Web servers from IIS 6 to IIS7, IIS8, IIS8.5, and IIS 10 with ease</h2>
+<p>Simplify the planning of your IIS6/IIS7/IIS8/IIS10 migrations by determining incompatibilities and previewing the proposed changes before starting the process. Learning about any potential issues in advance gives you the chance to take corrective measures and simplifies migration.</p>
+<h2>Synchronize your server farm efficiently</h2>
+<p>Web Deploy allows you to efficiently synchronize sites, applications or servers across your IIS server farm by detecting differences between the source and destination content and transferring only those changes which need synchronization. The tool simplifies the synchronization process by automatically determining the configuration, content and certificates to be synchronized for a specific site. In addition to the default behavior, you still have the option to specify additional artifacts for the synchronization, including databases, COM objects, GAC assemblies and registry settings.</p>
+<h2>Features</h2>
+<ul>
+	<li>Seamless integration with IIS Manager (IIS7 and above), Visual Studio (2010 and above) for creating packages and deploying them onto a machine, both locally and remotely.</li>
+	<li>Seamless integration with the Web Platform Installer to install community web applications simply and easily.</li>
+	<li>Web application packaging:<ul>
+		<li>Ability to package a Web application or an entire site, including the associated databases.</li>
+		<li>Ability to package ACLs, COM, GAC and registry settings.</li>
+		<li>Supports both live servers and zipped packages as a source or destination.</li>
+	</ul>
+	</li>
+	<li>Web application deployment:<ul>
+		<li>Administrative privileges are not required in order to deploy Web applications.</li>
+		<li>Ability to add powerful parameters to change text in files when they are deployed (such as prompting to replace a connection string when deploying from QA to staging environments).</li>
+		<li>Integration with the IIS Web Management Service (WMSVC) for remote deployment by non-administrators.</li>
+		<li>Server administrators have granular control over the operations that can be performed and can delegate tasks to non-administrators.</li>
+	</ul>
+	</li>
+	<li>Web server migration and synchronization:
+<ul>
+		<li>Ability to synchronize or migrate the entire Web server, a Web site or application.</li>
+		<li>Synchronizes only the data that has changed.</li>
+		<li>Ability to detect missing dependencies during synchronization.</li>
+		<li>Automatically gathers content, IIS configuration, SSL certificates and ASP.NET configuration when you sync a Web site. </li>
+	</ul>
+	</li>
+	<li>Automatic backup of Web Sites before making any changes.<ul>
+		<li>Administrator can configure Web Deploy such that it creates and store backup of websites on the server.</li>
+		<li>End users can directly restore their websites without admins involvement.</li>
+	</ul>
+	</li>
+	<li>In addition to the IIS Manager and Visual Studio, tasks can be performed using the command-line, PowerShell Cmdlets or public APIs.</li>
+</ul>
+<h2 id="additionalDownloads">Download Web Deploy</h2>
+<ul>
+<li>Czech: <a href="http://download.microsoft.com/download/4/A/B/4ABC96F2-A611-4255-ADEE-7D2D53B9B7CF/WebDeploy_x86_cs-CZ.msi">x86</a> / <a href="http://download.microsoft.com/download/4/A/B/4ABC96F2-A611-4255-ADEE-7D2D53B9B7CF/WebDeploy_amd64_cs-CZ.msi">x64</a></li>
+<li>German: <a href="http://download.microsoft.com/download/4/3/F/43F7FC1A-F70C-49C2-99A1-7CE6B7CAF60F/WebDeploy_x86_de-DE.msi">x86</a> / <a href="http://download.microsoft.com/download/4/3/F/43F7FC1A-F70C-49C2-99A1-7CE6B7CAF60F/WebDeploy_amd64_de-DE.msi">x64</a></li>
+<li>English: <a href="http://download.microsoft.com/download/0/1/D/01DC28EA-638C-4A22-A57B-4CEF97755C6C/WebDeploy_x86_en-US.msi">x86</a> / <a href="http://download.microsoft.com/download/0/1/D/01DC28EA-638C-4A22-A57B-4CEF97755C6C/WebDeploy_amd64_en-US.msi">x64</a></li>
+<li>Spanish: <a href="http://download.microsoft.com/download/8/7/2/87257D73-6306-4FD9-B47C-E971F4BD0A77/WebDeploy_x86_es-ES.msi">x86</a> / <a href="http://download.microsoft.com/download/8/7/2/87257D73-6306-4FD9-B47C-E971F4BD0A77/WebDeploy_amd64_es-ES.msi">x64</a></li>
+<li>French: <a href="http://download.microsoft.com/download/4/0/8/408B6C0D-585D-44E2-81ED-15536D4E321F/WebDeploy_x86_fr-FR.msi">x86</a> / <a href="http://download.microsoft.com/download/4/0/8/408B6C0D-585D-44E2-81ED-15536D4E321F/WebDeploy_amd64_fr-FR.msi">x64</a></li>
+<li>Italian: <a href="http://download.microsoft.com/download/0/D/C/0DC7AA01-0286-4E17-A610-4BE32AB656BE/WebDeploy_x86_it-IT.msi">x86</a> / <a href="http://download.microsoft.com/download/0/D/C/0DC7AA01-0286-4E17-A610-4BE32AB656BE/WebDeploy_amd64_it-IT.msi">x64</a></li>
+<li>Japanese: <a href="http://download.microsoft.com/download/0/D/5/0D50B63D-EE55-4834-8312-89CDEFABDE44/WebDeploy_x86_ja-JP.msi">x86</a> / <a href="http://download.microsoft.com/download/0/D/5/0D50B63D-EE55-4834-8312-89CDEFABDE44/WebDeploy_amd64_ja-JP.msi">x64</a></li>
+<li>Korean: <a href="http://download.microsoft.com/download/3/C/4/3C40387C-E975-4A5A-B44B-963F736AA097/WebDeploy_x86_ko-KR.msi">x86</a> / <a href="http://download.microsoft.com/download/3/C/4/3C40387C-E975-4A5A-B44B-963F736AA097/WebDeploy_amd64_ko-KR.msi">x64</a></li>
+<li>Polish: <a href="http://download.microsoft.com/download/B/2/2/B22FB61D-06ED-4FD7-9AD5-F538E4569FD0/WebDeploy_x86_pl-PL.msi">x86</a> / <a href="http://download.microsoft.com/download/B/2/2/B22FB61D-06ED-4FD7-9AD5-F538E4569FD0/WebDeploy_amd64_pl-PL.msi">x64</a></li>
+<li>Portuguese (Brazil): <a href="http://download.microsoft.com/download/C/B/D/CBD42703-6E26-4C9B-B341-2F4C84088853/WebDeploy_x86_pt-BR.msi">x86</a> / <a href="http://download.microsoft.com/download/C/B/D/CBD42703-6E26-4C9B-B341-2F4C84088853/WebDeploy_amd64_pt-BR.msi">x64</a></li>
+<li>Russian: <a href="http://download.microsoft.com/download/7/0/E/70E54287-6810-4C50-AE1F-EEDE83AF41C4/WebDeploy_x86_ru-RU.msi">x86</a> / <a href="http://download.microsoft.com/download/7/0/E/70E54287-6810-4C50-AE1F-EEDE83AF41C4/WebDeploy_amd64_ru-RU.msi">x64</a></li>
+<li>Turkish: <a href="http://download.microsoft.com/download/2/A/4/2A48835C-D08F-48F0-977F-8522EF08638A/WebDeploy_x86_tr-TR.msi">x86</a> / <a href="http://download.microsoft.com/download/2/A/4/2A48835C-D08F-48F0-977F-8522EF08638A/WebDeploy_amd64_tr-TR.msi">x64</a></li>
+<li>Chinese (Simplified): <a href="http://download.microsoft.com/download/5/6/4/56418889-EAC9-4CE6-93C3-E0DA3D64A0D8/WebDeploy_x86_zh-CN.msi">x86</a> / <a href="http://download.microsoft.com/download/5/6/4/56418889-EAC9-4CE6-93C3-E0DA3D64A0D8/WebDeploy_amd64_zh-CN.msi">x64</a></li>
+<li>Chinese (Traditional): <a href="http://download.microsoft.com/download/5/4/4/5441215F-78DB-4686-AD05-3FAD23C406D1/WebDeploy_x86_zh-TW.msi">x86</a> / <a href="http://download.microsoft.com/download/5/4/4/5441215F-78DB-4686-AD05-3FAD23C406D1/WebDeploy_amd64_zh-TW.msi">x64</a></li>
+</ul></span></article>
+    </section>
+    <section class="col-right">
+      <div id="FeaturedAd" data-adzoneid="NaN" data-adtypeid="5" class="ad-300x250 " data-adwidth="300px" data-adheight="250px" style="width:300px;height:250px;"></div>  
+      <nav class="nav-base"><h1>Related Learning</h1><h2>Articles</h2>
+<ul>
+<li><a title="Introduction to Web Deploy" href="/learn/publish/using-web-deploy/introduction-to-web-deploy">Web Deploy Overview</a></li>
+<li><a title="Installing and Configuring Web Deploy " href="/learn/install/installing-publishing-technologies/installing-and-configuring-web-deploy">Installing the Web Deploy</a></li>
+<li>
+<a title="Create a Package" href="/learn/publish/using-web-deploy/export-a-package-through-iis-manager">Create a Package</a></li>
+<li><a title="Install a Package" href="/learn/publish/using-web-deploy/import-a-package-through-iis-manager">Install a Package</a></li>
+<li><a title="Configure the Web Deploy Handler on IIS 7.0" href="/learn/publish/using-web-deploy/configure-the-web-deployment-handler">Configure the Web Deploy Handler</a>
+</li>
+<li>
+<a title="Migrating from IIS 6.0 to IIS 7.0" href="/learn/publish/using-web-deploy/migrate-a-web-site-from-iis-60-to-iis-7-or-above">Migrating from IIS 6.0 to IIS 7.0</a></li>
+<li><a title="Syncing between two IIS 7.0 servers" href="/learn/publish/using-web-deploy/synchronize-iis">Syncing between two IIS 7.0 servers</a>
+</li>
+<li><a title="Syncing between two IIS 6.0 servers" href="/learn/publish/using-web-deploy/synchronize-iis-60-web-sites">Syncing between two IIS 6.0 servers</a></li>
+</ul>
+<h2>Forum</h2>
+<ul>
+<li><a href="//forums.iis.net/1144.aspx">Web Deploy forum</a></li>	
+</ul>
+<h2>Blog Posts</h2>
+<ul>
+<li><a href="//blogs.iis.net/msdeploy/">Web Deploy team blog</a></li>
+</ul></nav>
+    </section>
+  </div>
+  <div id="BottomAd" data-adzoneid="0" data-adtypeid="4" class="ad centered-ad-728" data-adwidth="728px" data-adheight="90px" style="width:728px;height:90px;"></div> 
+
+
+		<footer id="footer-site">
+	<ul>
+		<li class="text-links">This site is managed for Microsoft by Neudesic, LLC. | © 2018 Microsoft. All rights reserved.</li>
+		<li><a href="https://go.microsoft.com/fwlink/?LinkId=521839" data-mscc-ic="false">Privacy Statement</a></li>
+		<li><a href="https://www.iis.net/terms-of-use" data-mscc-ic="false">Terms of Use</a></li>
+		<li><a href="https://www.iis.net/contact">Contact Us</a></li>
+		<li><a href="http://www.neudesicmediagroup.com/?site=iis#contactus">Advertise With Us</a></li>
+<li><a href="https://azure.microsoft.com/">Hosted on Microsoft Azure</a></li>
+	</ul>
+	<ul class="social">
+		<li>Follow us on:</li>
+		<li><a href="https://www.twitter.com/inetsrv/" class="twitter">Twitter</a></li>
+		<li><a href="https://facebook.com/inetsrv/" class="facebook">Facebook</a></li>
+	</ul>
+	<ul class="logo">
+	<li><a href="https://microsoft.com/" class="logo-footer">Microsoft</a></li>		        
+	<li><a href="https://forums.iis.net/1080.aspx">Feedback on IIS</a></li>
+	</ul>
+</footer>
+	</div>
+	
+  
+
+	<script src='https://www-iis.azureedge.net/v-2017-12-07-003/scripts-bundle/jquery-1.8.2.min.js' type="text/javascript"></script>
+	<script type="text/javascript">$.ajaxSetup({ cache: false });var searchDomain='https://www.iis.net';</script>
+	
+  
+    <script type="text/javascript">var s=document.createElement('script');s.type='text/javascript';s.src='https://www-iis.azureedge.net/v-2017-12-07-003/scripts-bundle/main.js';document.body.appendChild(s);</script>
+
+
+
+	
+</body>
+</html>

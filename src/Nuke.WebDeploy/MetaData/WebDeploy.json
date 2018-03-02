@@ -1,0 +1,96 @@
+{
+  "$schema": "https://raw.githubusercontent.com/nuke-build/nuke/master/source/Nuke.CodeGeneration/schema.json",
+  "license": [
+    "Copyright Georg Dangl 2018.",
+    "Distributed under the MIT License.",
+    "https://github.com/GeorgDangl/Nuke.WebDeploy/blob/dev/LICENSE.md"
+  ],
+  "references": [
+    "https://www.iis.net/downloads/microsoft/web-deploy"
+  ],
+  "name": "WebDeploy",
+  "officialUrl": "https://github.com/GeorgDangl/Nuke.WebDeploy",
+  "help": "This plugin provides Microsoft WebDeploy functionality for the NUKE Build system. It relies on the Microsoft.Web.Deployment NuGet package and therefore only supports builds on Windows. The functionality is quite limited right now, allowing only to deploy to an IIS or Azure app. Contributions are welcome!",
+  "tasks": [
+    {
+      "customStart": true,
+      "settingsClass": {
+        "properties": [
+          {
+            "name": "PublishUrl",
+            "type": "string",
+            "assertion": "NotNull",
+            "help": "The PublishUrl should include the site parameter, e.g.: https://appname.scm.azurewebsites.net:443/msdeploy.axd?site=appname"
+          },
+          {
+            "name": "Username",
+            "type": "string",
+            "assertion": "NotNull",
+            "help": "The username used for the deployment via http basic authentication"
+          },
+          {
+            "name": "Password",
+            "type": "string",
+            "assertion": "NotNull",
+            "help": "The password used for the deployment via http basic authentication"
+          },
+          {
+            "name": "EnableDoNotDeleteRule",
+            "type": "bool",
+            "help": "Toggles enabling of the DoNotDelete rule"
+          },
+          {
+            "name": "EnableAppOfflineRule",
+            "type": "bool",
+            "help": "Toggles enabling of the AppOfflineRule. If enabled, WebDeploy will create a file called App_Offline.htm before copying the content and remove it afterwards. This makes IIS suspend the site during the deployment process and frees locked files."
+          },
+          {
+            "name": "ShowWhatIf",
+            "type": "bool",
+            "help": "If enabled, no actual operations are performed. The output is still printed to the console to display what would have happened."
+          },
+          {
+            "name": "SiteName",
+            "type": "string",
+            "assertion": "NotNull",
+            "help": "The name of the site for web deploy."
+          },
+          {
+            "name": "SourcePath",
+            "type": "string",
+            "assertion": "Directory",
+            "help": "The source folder that should be synced to, e.g. the local publish folder."
+          },
+          {
+            "name": "RetryAttempts",
+            "type": "int",
+            "default": "5",
+            "help": "Count of retry attempts to perform before giving up. This is useful when sites take a few moments to spin down and release locked files."
+          },
+          {
+            "name": "RetryInterval",
+            "type": "int",
+            "default": "5000",
+            "help": "Delay in milliseconds between retry attempts."
+          },
+          {
+            "name": "WrapAppOffline",
+            "type": "bool",
+            "help": "Azure Web Apps in IIS are case sensitive and only accept all-lowercase app_offline.htm files. If this is toggled, an appropriately named file is created on the destination before deployment and deleted afterwards."
+          },
+          {
+            "name": "AppOfflineHtmlTemplate",
+            "type": "string",
+            "default": "DefaultAppOfflineHtmlTemplate",
+            "help": "A html string that is used for the content of the App_Offline.htm file. If not specified, a default message is shown."
+          },
+          {
+            "name": "Parameters",
+            "type": "Dictionary<string,string>",
+            "help": "Additional web deploy sync parameters."
+          }
+        ]
+      }
+    }
+  ]
+}

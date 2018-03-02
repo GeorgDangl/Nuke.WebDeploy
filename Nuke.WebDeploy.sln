@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2024
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = ".build", "build\.build.csproj", "{EBDA2F16-314F-4173-B3B1-8509064E32C5}"
 EndProject
@@ -11,10 +11,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{930762F4-3AA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{AF27BF91-B926-444A-88F5-218011B3DF10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuke.WebDeploy.Tests", "test\Nuke.WebDeploy.Tests\Nuke.WebDeploy.Tests.csproj", "{6BD0F4E1-855A-448E-A5A2-B079779E8899}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuke.WebDeploy.Tests", "test\Nuke.WebDeploy.Tests\Nuke.WebDeploy.Tests.csproj", "{6BD0F4E1-855A-448E-A5A2-B079779E8899}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D9348017-5119-4EB4-80F2-D90D80FD8CFB}"
 	ProjectSection(SolutionItems) = preProject
+		CHANGELOG.md = CHANGELOG.md
+		docfx.json = docfx.json
+		GitVersion.yml = GitVersion.yml
 		LICENSE.md = LICENSE.md
 		README.md = README.md
 	EndProjectSection
