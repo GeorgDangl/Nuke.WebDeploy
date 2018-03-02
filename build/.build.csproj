@@ -21,7 +21,7 @@
     <PackageReference Include="Nuke.CodeGeneration" Version="$(NukeVersion)">
       <ExcludeAssets>Build</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="GitVersion.CommandLine" Version="4.0.0-beta0011" />
+    <PackageReference Include="GitVersion.CommandLine" Version="4.0.0-beta0012" />
     <PackageReference Include="xunit.runner.console" Version="2.4.0-beta1-build3919" />
     <PackageReference Include="Nuke.WebDocu" Version="1.0.0-build-2" />
   </ItemGroup>
