@@ -1,8 +1,8 @@
-// Copyright Matthias Koch 2017.
+// Copyright Matthias Koch 2018.
 // Distributed under the MIT License.
 // https://github.com/nuke-build/nuke/blob/master/LICENSE
 
-// Generated with Nuke.CodeGeneration, Version: 0.1.458 [CommitSha: 88f1c32b].
+// Generated with Nuke.CodeGeneration, Version: 0.2.0 [CommitSha: 2b38bd4a].
 
 using JetBrains.Annotations;
 using Nuke.Common.Tools;
