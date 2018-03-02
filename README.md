@@ -1,7 +1,11 @@
 # Nuke.WebDeploy
 
 [![Build Status](https://jenkins.dangl.me/buildStatus/icon?job=Nuke.WebDeploy.Tests)](https://jenkins.dangl.me/job/Nuke.WebDeploy.Tests/)
-[![MyGet](https://img.shields.io/myget/dangl/v/Nuke.WebDeploy.svg)]()
+
+[![Built with Nuke](http://nuke.build/rounded)](https://www.nuke.build)
+
+[![NuGet](https://img.shields.io/nuget/v/Nuke.WebDeploy.svg)](https://www.nuget.org/packages/Nuke.WebDeploy)
+[![MyGet](https://img.shields.io/myget/dangl/v/Nuke.WebDeploy.svg)](https://www.myget.org/feed/dangl/package/nuget/Nuke.WebDeploy)
 
 This plugin provides [Microsoft WebDeploy](https://www.iis.net/downloads/microsoft/web-deploy) functionality
 for the [NUKE Build](https://github.com/nuke-build/nuke) system. It relies on the [Microsoft.Web.Deployment](https://www.nuget.org/packages/Microsoft.Web.Deployment/)
@@ -30,16 +34,14 @@ Target Deploy => _ => _
     .Requires(() => WebDeploySiteName)
     .Executes(() =>
     {
-        WebDeploy(s =>
-        {
-            return s.SetSourcePath(OutputDirectory)
+        WebDeploy(s => s
+                    .SetSourcePath(OutputDirectory)
                     .SetUsername(WebDeployUsername)
                     .SetPassword(WebDeployPassword)
                     .SetEnableAppOfflineRule(true)
                     .SetPublishUrl(WebDeployPublishUrl)
                     .SetSiteName(WebDeploySiteName)
-                    .SetWrapAppOffline(true);
-        });
+                    .SetWrapAppOffline(true));
     });
 ```
 
