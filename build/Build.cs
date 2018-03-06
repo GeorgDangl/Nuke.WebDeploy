@@ -104,11 +104,6 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .Executes(() =>
         {
-            if (IsLocalBuild)
-            {
-                SetVariable("VSINSTALLDIR", @"C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional");
-                SetVariable("VisualStudioVersion", "15.0");
-            }
             DocFxMetadata(DocFxFile, s => s.SetLogLevel(DocFxLogLevel.Verbose));
         });
 
