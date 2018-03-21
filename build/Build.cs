@@ -116,8 +116,7 @@ class Build : NukeBuild
             File.Copy(SolutionDirectory / "README.md", SolutionDirectory / "index.md");
 
             DocFxBuild(DocFxFile, s => s
-                .ClearXRefMaps()
-                .SetLogLevel(DocFxLogLevel.Verbose));
+                .ClearXRefMaps());
 
             File.Delete(SolutionDirectory / "index.md");
             Directory.Delete(SolutionDirectory / "api", true);
@@ -140,7 +139,7 @@ class Build : NukeBuild
         .DependsOn(Pack)
         .Requires(() => GitHubAuthenticationToken)
         .OnlyWhen(() => GitVersion.BranchName.Equals("master") || GitVersion.BranchName.Equals("origin/master"))
-        .Executes<Task>(async () =>
+        .Executes(() =>
         {
             var releaseTag = $"v{GitVersion.MajorMinorPatch}";
 
@@ -151,15 +150,18 @@ class Build : NukeBuild
 
             var repositoryInfo = GetGitHubRepositoryInfo(GitRepository);
 
-            await PublishRelease(new GitHubReleaseSettings()
-                .SetArtifactPaths(GlobFiles(OutputDirectory, "*.nupkg").NotEmpty().ToArray())
-                .SetCommitSha(GitVersion.Sha)
-                .SetReleaseNotes(completeChangeLog)
-                .SetRepositoryName(repositoryInfo.repositoryName)
-                .SetRepositoryOwner(repositoryInfo.gitHubOwner)
-                .SetTag(releaseTag)
-                .SetToken(GitHubAuthenticationToken)
-            );
+            PublishRelease(new GitHubReleaseSettings()
+                    .SetArtifactPaths(GlobFiles(OutputDirectory, "*.nupkg").NotEmpty().ToArray())
+                    .SetCommitSha(GitVersion.Sha)
+                    .SetReleaseNotes(completeChangeLog)
+                    .SetRepositoryName(repositoryInfo.repositoryName)
+                    .SetRepositoryOwner(repositoryInfo.gitHubOwner)
+                    .SetTag(releaseTag)
+                    .SetToken(GitHubAuthenticationToken)
+                )
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult();
         });
 
     Target Generate => _ => _
