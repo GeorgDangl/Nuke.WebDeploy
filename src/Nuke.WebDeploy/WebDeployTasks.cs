@@ -3,33 +3,25 @@ using Nuke.Core.Tooling;
 
 namespace Nuke.WebDeploy
 {
-    public static partial class WebDeployTasks
+    public static class WebDeployTasks
     {
-        private static IProcess StartProcess(WebDeploySettings settings, ProcessSettings processSettings = null)
+        public static void WebDeploy(Configure<WebDeploySettings> settingsConfigurator)
         {
-            try
+            var settings = settingsConfigurator(new WebDeploySettings());
+            // ReSharper disable once UnusedVariable
+            using (var appOfflineWrapper = new AppOfflineWrapper(settings))
             {
-                // ReSharper disable once UnusedVariable
-                using (var appOfflineWrapper = new AppOfflineWrapper(settings))
+                var sourceOptions = WebDeployOptionsFactory.GetSourceOptions();
+                var destinationOptions = WebDeployOptionsFactory.GetDestinationOptions(settings);
+                destinationOptions.Trace += WebDeployLogger.DestinationOptions_Trace;
+                var syncOptions = WebDeployOptionsFactory.GetSyncOptions(settings);
+                var sourceProvider = DeploymentWellKnownProvider.IisApp;
+                var destinationProvider = DeploymentWellKnownProvider.IisApp;
+                using (var deploymentObject = DeploymentManager.CreateObject(sourceProvider, settings.SourcePath, sourceOptions))
                 {
-                    var sourceOptions = WebDeployOptionsFactory.GetSourceOptions();
-                    var destinationOptions = WebDeployOptionsFactory.GetDestinationOptions(settings);
-                    destinationOptions.Trace += WebDeployLogger.DestinationOptions_Trace;
-                    var syncOptions = WebDeployOptionsFactory.GetSyncOptions(settings);
-                    var sourceProvider = DeploymentWellKnownProvider.IisApp;
-                    var destinationProvider = DeploymentWellKnownProvider.IisApp;
-                    using (var deploymentObject = DeploymentManager.CreateObject(sourceProvider, settings.SourcePath, sourceOptions))
-                    {
-                        AppendCustomParameters(settings, deploymentObject);
-                        deploymentObject.SyncTo(destinationProvider, settings.SiteName, destinationOptions, syncOptions);
-                    }
-
-                    return new WebDeployProcess(true);
+                    AppendCustomParameters(settings, deploymentObject);
+                    deploymentObject.SyncTo(destinationProvider, settings.SiteName, destinationOptions, syncOptions);
                 }
-            }
-            catch
-            {
-                return new WebDeployProcess(false);
             }
         }
 

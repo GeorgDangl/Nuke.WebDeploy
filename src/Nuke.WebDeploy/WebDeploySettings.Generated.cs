@@ -20,22 +20,6 @@ using System.Text;
 
 namespace Nuke.WebDeploy
 {
-    [PublicAPI]
-    [ExcludeFromCodeCoverage]
-    public static partial class WebDeployTasks
-    {
-        static partial void PreProcess (WebDeploySettings toolSettings);
-        static partial void PostProcess (WebDeploySettings toolSettings);
-        /// <summary><p>This plugin provides Microsoft WebDeploy functionality for the NUKE Build system. It relies on the Microsoft.Web.Deployment NuGet package and therefore only supports builds on Windows. The functionality is quite limited right now, allowing only to deploy to an IIS or Azure app. Contributions are welcome!</p><p>For more details, visit the <a href="https://github.com/GeorgDangl/Nuke.WebDeploy">official website</a>.</p></summary>
-        public static void WebDeploy (Configure<WebDeploySettings> configurator = null, ProcessSettings processSettings = null)
-        {
-            var toolSettings = configurator.InvokeSafe(new WebDeploySettings());
-            PreProcess(toolSettings);
-            var process = StartProcess(toolSettings, processSettings);
-            process.AssertZeroExitCode();
-            PostProcess(toolSettings);
-        }
-    }
     #region WebDeploySettings
     /// <summary><p>Used within <see cref="WebDeployTasks"/>.</p></summary>
     [PublicAPI]
