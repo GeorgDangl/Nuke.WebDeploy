@@ -2,23 +2,23 @@
 using System.Linq;
 using Nuke.Common.Tools.DocFx;
 using Nuke.Common.Tools.DotNet;
-using Nuke.Core;
+using Nuke.Common;
 using Nuke.WebDocu;
 using static Nuke.WebDocu.WebDocuTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
-using static Nuke.Core.IO.FileSystemTasks;
-using static Nuke.Core.IO.PathConstruction;
-using static Nuke.Core.EnvironmentInfo;
+using static Nuke.Common.IO.FileSystemTasks;
+using static Nuke.Common.IO.PathConstruction;
+using static Nuke.Common.EnvironmentInfo;
 using static Nuke.Common.Tools.Xunit.XunitTasks;
 using Nuke.Common.Tools.Xunit;
-using Nuke.Core.Utilities.Collections;
+using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.Tools.DocFx.DocFxTasks;
 using static Nuke.CodeGeneration.CodeGenerator;
 using System;
 using System.Threading.Tasks;
 using Nuke.Common.Git;
 using Nuke.Common.Tools.GitVersion;
-using Nuke.Core.Utilities;
+using Nuke.Common.Utilities;
 using Nuke.GitHub;
 using static Nuke.GitHub.ChangeLogExtensions;
 using static Nuke.GitHub.GitHubTasks;
@@ -169,7 +169,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             GenerateCode(
-                metadataDirectory: RootDirectory / "src" / "Nuke.WebDeploy" / "MetaData",
+                specificationDirectory: RootDirectory / "src" / "Nuke.WebDeploy" / "MetaData",
                 generationBaseDirectory: RootDirectory / "src" / "Nuke.WebDeploy",
                 baseNamespace: "Nuke.WebDeploy"
             );
