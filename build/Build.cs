@@ -104,7 +104,7 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .Executes(() =>
         {
-            DocFxMetadata(DocFxFile, s => s.SetLogLevel(DocFxLogLevel.Verbose));
+            DocFxMetadata(DocFxFile, s => s.SetLogLevel(DocFxLogLevel.Warning));
         });
 
     Target BuildDocumentation => _ => _
