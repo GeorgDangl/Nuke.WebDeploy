@@ -2,23 +2,23 @@
 using System.Linq;
 using Nuke.Common.Tools.DocFx;
 using Nuke.Common.Tools.DotNet;
-using Nuke.Core;
+using Nuke.Common;
 using Nuke.WebDocu;
 using static Nuke.WebDocu.WebDocuTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
-using static Nuke.Core.IO.FileSystemTasks;
-using static Nuke.Core.IO.PathConstruction;
-using static Nuke.Core.EnvironmentInfo;
+using static Nuke.Common.IO.FileSystemTasks;
+using static Nuke.Common.IO.PathConstruction;
+using static Nuke.Common.EnvironmentInfo;
 using static Nuke.Common.Tools.Xunit.XunitTasks;
 using Nuke.Common.Tools.Xunit;
-using Nuke.Core.Utilities.Collections;
+using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.Tools.DocFx.DocFxTasks;
 using static Nuke.CodeGeneration.CodeGenerator;
 using System;
 using System.Threading.Tasks;
 using Nuke.Common.Git;
 using Nuke.Common.Tools.GitVersion;
-using Nuke.Core.Utilities;
+using Nuke.Common.Utilities;
 using Nuke.GitHub;
 using static Nuke.GitHub.ChangeLogExtensions;
 using static Nuke.GitHub.GitHubTasks;
@@ -60,7 +60,8 @@ class Build : NukeBuild
         .Executes(() =>
         {
             DotNetBuild(s => DefaultDotNetBuild
-                .SetFileVersion(GitVersion.AssemblySemVer));
+                .SetFileVersion(GitVersion.GetNormalizedFileVersion())
+                .SetAssemblyVersion(GitVersion.AssemblySemVer));
         });
 
     Target Pack => _ => _
@@ -103,12 +104,7 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .Executes(() =>
         {
-            if (IsLocalBuild)
-            {
-                SetVariable("VSINSTALLDIR", @"C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional");
-                SetVariable("VisualStudioVersion", "15.0");
-            }
-            DocFxMetadata(DocFxFile, s => s.SetLogLevel(DocFxLogLevel.Verbose));
+            DocFxMetadata(DocFxFile, s => s.SetLogLevel(DocFxLogLevel.Warning));
         });
 
     Target BuildDocumentation => _ => _
@@ -120,8 +116,7 @@ class Build : NukeBuild
             File.Copy(SolutionDirectory / "README.md", SolutionDirectory / "index.md");
 
             DocFxBuild(DocFxFile, s => s
-                .ClearXRefMaps()
-                .SetLogLevel(DocFxLogLevel.Verbose));
+                .ClearXRefMaps());
 
             File.Delete(SolutionDirectory / "index.md");
             Directory.Delete(SolutionDirectory / "api", true);
@@ -144,7 +139,7 @@ class Build : NukeBuild
         .DependsOn(Pack)
         .Requires(() => GitHubAuthenticationToken)
         .OnlyWhen(() => GitVersion.BranchName.Equals("master") || GitVersion.BranchName.Equals("origin/master"))
-        .Executes<Task>(async () =>
+        .Executes(() =>
         {
             var releaseTag = $"v{GitVersion.MajorMinorPatch}";
 
@@ -155,15 +150,18 @@ class Build : NukeBuild
 
             var repositoryInfo = GetGitHubRepositoryInfo(GitRepository);
 
-            await PublishRelease(new GitHubReleaseSettings()
-                .SetArtifactPaths(GlobFiles(OutputDirectory, "*.nupkg").NotEmpty().ToArray())
-                .SetCommitSha(GitVersion.Sha)
-                .SetReleaseNotes(completeChangeLog)
-                .SetRepositoryName(repositoryInfo.repositoryName)
-                .SetRepositoryOwner(repositoryInfo.gitHubOwner)
-                .SetTag(releaseTag)
-                .SetToken(GitHubAuthenticationToken)
-            );
+            PublishRelease(new GitHubReleaseSettings()
+                    .SetArtifactPaths(GlobFiles(OutputDirectory, "*.nupkg").NotEmpty().ToArray())
+                    .SetCommitSha(GitVersion.Sha)
+                    .SetReleaseNotes(completeChangeLog)
+                    .SetRepositoryName(repositoryInfo.repositoryName)
+                    .SetRepositoryOwner(repositoryInfo.gitHubOwner)
+                    .SetTag(releaseTag)
+                    .SetToken(GitHubAuthenticationToken)
+                )
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult();
         });
 
     Target Generate => _ => _
@@ -171,7 +169,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             GenerateCode(
-                metadataDirectory: RootDirectory / "src" / "Nuke.WebDeploy" / "MetaData",
+                specificationDirectory: RootDirectory / "src" / "Nuke.WebDeploy" / "MetaData",
                 generationBaseDirectory: RootDirectory / "src" / "Nuke.WebDeploy",
                 baseNamespace: "Nuke.WebDeploy"
             );

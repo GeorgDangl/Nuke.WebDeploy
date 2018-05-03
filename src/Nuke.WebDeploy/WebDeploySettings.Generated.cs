@@ -1,15 +1,15 @@
-// Copyright Matthias Koch 2018.
+// Copyright Matthias Koch, Sebastian Karasek 2018.
 // Distributed under the MIT License.
 // https://github.com/nuke-build/nuke/blob/master/LICENSE
 
-// Generated with Nuke.CodeGeneration, Version: 0.2.0 [CommitSha: 2b38bd4a].
+// Generated with Nuke.CodeGeneration, Version: 0.4.0 [CommitSha: c494ebb7].
 
 using JetBrains.Annotations;
+using Nuke.Common;
+using Nuke.Common.Execution;
+using Nuke.Common.Tooling;
 using Nuke.Common.Tools;
-using Nuke.Core;
-using Nuke.Core.Execution;
-using Nuke.Core.Tooling;
-using Nuke.Core.Utilities.Collections;
+using Nuke.Common.Utilities.Collections;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,22 +20,6 @@ using System.Text;
 
 namespace Nuke.WebDeploy
 {
-    [PublicAPI]
-    [ExcludeFromCodeCoverage]
-    public static partial class WebDeployTasks
-    {
-        static partial void PreProcess (WebDeploySettings toolSettings);
-        static partial void PostProcess (WebDeploySettings toolSettings);
-        /// <summary><p>This plugin provides Microsoft WebDeploy functionality for the NUKE Build system. It relies on the Microsoft.Web.Deployment NuGet package and therefore only supports builds on Windows. The functionality is quite limited right now, allowing only to deploy to an IIS or Azure app. Contributions are welcome!</p><p>For more details, visit the <a href="https://github.com/GeorgDangl/Nuke.WebDeploy">official website</a>.</p></summary>
-        public static void WebDeploy (Configure<WebDeploySettings> configurator = null, ProcessSettings processSettings = null)
-        {
-            var toolSettings = configurator.InvokeSafe(new WebDeploySettings());
-            PreProcess(toolSettings);
-            var process = StartProcess(toolSettings, processSettings);
-            process.AssertZeroExitCode();
-            PostProcess(toolSettings);
-        }
-    }
     #region WebDeploySettings
     /// <summary><p>Used within <see cref="WebDeployTasks"/>.</p></summary>
     [PublicAPI]

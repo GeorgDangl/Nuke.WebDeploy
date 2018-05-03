@@ -27,7 +27,7 @@
 	<!-- Anti-Clickjacking script -->
 	<style id="antiClickjack">body{display:none !important;}</style>
 	<script type="text/javascript">if (self === top) { var antiClickjack = document.getElementById("antiClickjack"); antiClickjack.parentNode.removeChild(antiClickjack) } else top.location = self.location;</script>
-    	<script>var antiForgeryToken = "0npUc3qsloyXYW2HQ5xYBKiNtVYbZcIKUFrFEVFDV2AlHykQsBpBBmJxup6zmOr0uZT3j_NBfeG-XHm4F4xdT3xcXlI1:MdjpiFXpM1iyCM7q0JVmzlR1qnE7VeRWvlMY44LDa9O_TB_fjPInaV2N5iu8JNro5DQQokLBhGqyCB_J_WRwVJlaIKQ1";</script>
+    	<script>var antiForgeryToken = "44iX3t2Cofn2-AsnNBaMq_1XAfITA5lZbcXRhesDGXpCGeM89L7JyWPU4N65bHZNnhg8NXp3PxJrHl7uXk63GTV6WUU1:JFYJs5FozNUZsuPucidTy18FbBU5rONjVBzxFCbKXSAbQIqzKKkji0QxzcFFrCwxRwcruO__K9HHOwbwO9zQB2gDThc1";</script>
 	
   <link href='https://www-iis.azureedge.net/v-2017-12-07-003/css-bundle/downloads.css' rel="stylesheet" type="text/css" media="all" />   
 
