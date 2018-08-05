@@ -115,7 +115,7 @@ class Build : NukeBuild
         {
             void TestXunit()
                 => Xunit2(GlobFiles(SolutionDirectory, $"*/bin/{Configuration}/net4*/Nuke.*.Tests.dll").NotEmpty(),
-                    s => s.AddResultReport(Xunit2ResultFormat.Xml, OutputDirectory / "tests.xml"));
+                    s => s.AddResultReport(Xunit2ResultFormat.Xml, OutputDirectory / "tests.xml").SetFramework("net461"));
 
             TestXunit();
         });
