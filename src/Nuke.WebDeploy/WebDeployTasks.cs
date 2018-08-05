@@ -1,5 +1,5 @@
 ﻿using Microsoft.Web.Deployment;
-using Nuke.Core.Tooling;
+using Nuke.Common.Tooling;
 
 namespace Nuke.WebDeploy
 {
