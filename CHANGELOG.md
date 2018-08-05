@@ -2,6 +2,9 @@
 
 All notable changes to **Nuke.WebDeploy** are documented here.
 
+## v1.2.1:
+- Update code generation to include again `WebDeploySettingsExtensions`
+
 ## v1.2.0:
 - Update to NUKE 0.6.0
 
