@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.Web.Deployment;
-using Nuke.Core;
+using Nuke.Common;
 
 namespace Nuke.WebDeploy
 {

@@ -2,6 +2,9 @@
 
 All notable changes to **Nuke.WebDeploy** are documented here.
 
+## v1.2.0:
+- Update to NUKE 0.6.0
+
 ## v1.1.0:
 - Update to NUKE 0.4.0
 

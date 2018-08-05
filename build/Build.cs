@@ -23,20 +23,29 @@ using Nuke.GitHub;
 using static Nuke.GitHub.ChangeLogExtensions;
 using static Nuke.GitHub.GitHubTasks;
 using static Nuke.Common.ChangeLog.ChangelogTasks;
+using Nuke.Azure.KeyVault;
 
+[KeyVaultSettings(
+    VaultBaseUrlParameterName = nameof(KeyVaultBaseUrl),
+    ClientIdParameterName = nameof(KeyVaultClientId),
+    ClientSecretParameterName = nameof(KeyVaultClientSecret))]
 class Build : NukeBuild
 {
     // Console application entry. Also defines the default target.
     public static int Main() => Execute<Build>(x => x.Test);
 
+    [Parameter] string KeyVaultBaseUrl;
+    [Parameter] string KeyVaultClientId;
+    [Parameter] string KeyVaultClientSecret;
     [GitVersion] readonly GitVersion GitVersion;
     [GitRepository] readonly GitRepository GitRepository;
 
-    [Parameter] readonly string MyGetApiKey;
-    [Parameter] readonly string MyGetSource;
-    [Parameter] readonly string DocuApiKey;
-    [Parameter] readonly string DocuApiEndpoint;
-    [Parameter] string GitHubAuthenticationToken;
+    [KeyVaultSecret] string DocuApiEndpoint;
+    [KeyVaultSecret] string GitHubAuthenticationToken;
+    [KeyVaultSecret] string PublicMyGetSource;
+    [KeyVaultSecret] string PublicMyGetApiKey;
+    [KeyVaultSecret("NukeWebDeploy-DocuApiKey")] string DocuApiKey;
+    [KeyVaultSecret] string NuGetApiKey;
 
     string DocFxFile => SolutionDirectory / "docfx.json";
     string ChangeLogFile => RootDirectory / "CHANGELOG.md";
@@ -76,8 +85,8 @@ class Build : NukeBuild
 
     Target Push => _ => _
         .DependsOn(Pack)
-        .Requires(() => MyGetSource)
-        .Requires(() => MyGetApiKey)
+        .Requires(() => PublicMyGetSource)
+        .Requires(() => PublicMyGetApiKey)
         .Requires(() => Configuration.EqualsOrdinalIgnoreCase("Release"))
         .Executes(() =>
         {
@@ -85,8 +94,19 @@ class Build : NukeBuild
                 .Where(x => !x.EndsWith("symbols.nupkg"))
                 .ForEach(x => DotNetNuGetPush(s => s
                     .SetTargetPath(x)
-                    .SetSource(MyGetSource)
-                    .SetApiKey(MyGetApiKey)));
+                    .SetSource(PublicMyGetSource)
+                    .SetApiKey(PublicMyGetApiKey)));
+
+            if (GitVersion.BranchName.Equals("master") || GitVersion.BranchName.Equals("origin/master"))
+            {
+                // Stable releases are published to NuGet
+                GlobFiles(OutputDirectory, "*.nupkg").NotEmpty()
+                    .Where(x => !x.EndsWith("symbols.nupkg"))
+                    .ForEach(x => DotNetNuGetPush(s => s
+                        .SetTargetPath(x)
+                        .SetSource("https://api.nuget.org/v3/index.json")
+                        .SetApiKey(NuGetApiKey)));
+            }
         });
 
     Target Test => _ => _
@@ -95,7 +115,7 @@ class Build : NukeBuild
         {
             void TestXunit()
                 => Xunit2(GlobFiles(SolutionDirectory, $"*/bin/{Configuration}/net4*/Nuke.*.Tests.dll").NotEmpty(),
-                    s => s.AddResultReport(Xunit2ResultFormat.Xml, OutputDirectory / "tests.xml"));
+                    s => s.AddResultReport(Xunit2ResultFormat.Xml, OutputDirectory / "tests.xml").SetFramework("net461"));
 
             TestXunit();
         });
