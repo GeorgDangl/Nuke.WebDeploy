@@ -1,6 +1,6 @@
 # Nuke.WebDeploy
 
-[![Build Status](https://jenkins.dangl.me/buildStatus/icon?job=Nuke.WebDeploy.Tests)](https://jenkins.dangl.me/job/Nuke.WebDeploy.Tests/)
+[![Build Status](https://jenkins.dangl.me/buildStatus/icon?job=Nuke.WebDeploy/dev)](https://jenkins.dangl.me/job/Nuke.WebDeploy/dev)
 
 [![Built with Nuke](http://nuke.build/rounded)](https://www.nuke.build)
 
