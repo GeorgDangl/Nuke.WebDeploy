@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Linq;
-using Nuke.Common.Tools.DocFx;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common;
 using Nuke.WebDocu;
@@ -12,7 +11,6 @@ using static Nuke.Common.EnvironmentInfo;
 using static Nuke.Common.Tools.Xunit.XunitTasks;
 using Nuke.Common.Tools.Xunit;
 using Nuke.Common.Utilities.Collections;
-using static Nuke.Common.Tools.DocFx.DocFxTasks;
 using static Nuke.CodeGeneration.CodeGenerator;
 using System;
 using System.Threading.Tasks;
@@ -24,15 +22,20 @@ using static Nuke.GitHub.ChangeLogExtensions;
 using static Nuke.GitHub.GitHubTasks;
 using static Nuke.Common.ChangeLog.ChangelogTasks;
 using Nuke.Azure.KeyVault;
+using static Nuke.DocFX.DocFXTasks;
+using Nuke.Common.ProjectModel;
+using Nuke.DocFX;
 
-[KeyVaultSettings(
-    VaultBaseUrlParameterName = nameof(KeyVaultBaseUrl),
-    ClientIdParameterName = nameof(KeyVaultClientId),
-    ClientSecretParameterName = nameof(KeyVaultClientSecret))]
 class Build : NukeBuild
 {
     // Console application entry. Also defines the default target.
     public static int Main() => Execute<Build>(x => x.Test);
+
+    [KeyVaultSettings(
+        BaseUrlParameterName = nameof(KeyVaultBaseUrl),
+        ClientIdParameterName = nameof(KeyVaultClientId),
+        ClientSecretParameterName = nameof(KeyVaultClientSecret))]
+    readonly KeyVaultSettings KeyVaultSettings;
 
     [Parameter] string KeyVaultBaseUrl;
     [Parameter] string KeyVaultClientId;
@@ -40,12 +43,19 @@ class Build : NukeBuild
     [GitVersion] readonly GitVersion GitVersion;
     [GitRepository] readonly GitRepository GitRepository;
 
-    [KeyVaultSecret] string DocuApiEndpoint;
+    [Parameter] readonly string Configuration = IsLocalBuild ? "Debug" : "Release";
+
+    [KeyVaultSecret] string DocuBaseUrl;
     [KeyVaultSecret] string GitHubAuthenticationToken;
     [KeyVaultSecret] string PublicMyGetSource;
     [KeyVaultSecret] string PublicMyGetApiKey;
     [KeyVaultSecret("NukeWebDeploy-DocuApiKey")] string DocuApiKey;
     [KeyVaultSecret] string NuGetApiKey;
+
+    [Solution("Dangl.AVACloud.sln")] readonly Solution Solution;
+    AbsolutePath SolutionDirectory => Solution.Directory;
+    AbsolutePath OutputDirectory => SolutionDirectory / "output";
+    AbsolutePath SourceDirectory => SolutionDirectory / "src";
 
     string DocFxFile => SolutionDirectory / "docfx.json";
     string ChangeLogFile => RootDirectory / "CHANGELOG.md";
@@ -61,16 +71,19 @@ class Build : NukeBuild
         .DependsOn(Clean)
         .Executes(() =>
         {
-            DotNetRestore(s => DefaultDotNetRestore);
+            DotNetRestore();
         });
 
     Target Compile => _ => _
         .DependsOn(Generate)
         .Executes(() =>
         {
-            DotNetBuild(s => DefaultDotNetBuild
+            DotNetBuild(x => x
+                .SetConfiguration(Configuration)
+                .EnableNoRestore()
                 .SetFileVersion(GitVersion.GetNormalizedFileVersion())
-                .SetAssemblyVersion(GitVersion.AssemblySemVer));
+                .SetAssemblyVersion(GitVersion.AssemblySemVer)
+                .SetInformationalVersion(GitVersion.InformationalVersion));
         });
 
     Target Pack => _ => _
@@ -79,8 +92,14 @@ class Build : NukeBuild
         {
             var changeLog = GetCompleteChangeLog(ChangeLogFile)
                 .EscapeStringPropertyForMsBuild();
-            DotNetPack(s => DefaultDotNetPack
-                .SetPackageReleaseNotes(changeLog));
+
+            DotNetPack(x => x
+                .SetConfiguration(Configuration)
+                .SetPackageReleaseNotes(changeLog)
+                .SetTitle("WebDeploy for NUKE Build - www.dangl-it.com")
+                .EnableNoBuild()
+                .SetOutputDirectory(OutputDirectory)
+                .SetVersion(GitVersion.NuGetVersion));
         });
 
     Target Push => _ => _
@@ -124,7 +143,7 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .Executes(() =>
         {
-            DocFxMetadata(DocFxFile, s => s.SetLogLevel(DocFxLogLevel.Warning));
+            DocFXMetadata(x => x.AddProjects(DocFxFile));
         });
 
     Target BuildDocumentation => _ => _
@@ -135,8 +154,7 @@ class Build : NukeBuild
             // Using README.md as index.md
             File.Copy(SolutionDirectory / "README.md", SolutionDirectory / "index.md");
 
-            DocFxBuild(DocFxFile, s => s
-                .ClearXRefMaps());
+            DocFXBuild(x => x.SetConfigFile(DocFxFile));
 
             File.Delete(SolutionDirectory / "index.md");
             Directory.Delete(SolutionDirectory / "api", true);
@@ -146,10 +164,10 @@ class Build : NukeBuild
         .DependsOn(Push) // To have a relation between pushed package version and published docs version
         .DependsOn(BuildDocumentation)
         .Requires(() => DocuApiKey)
-        .Requires(() => DocuApiEndpoint)
+        .Requires(() => DocuBaseUrl)
         .Executes(() =>
         {
-            WebDocu(s => s.SetDocuApiEndpoint(DocuApiEndpoint)
+            WebDocu(s => s.SetDocuBaseUrl(DocuBaseUrl)
                 .SetDocuApiKey(DocuApiKey)
                 .SetSourceDirectory(OutputDirectory / "docs")
                 .SetVersion(GitVersion.NuGetVersion));
@@ -170,7 +188,7 @@ class Build : NukeBuild
 
             var repositoryInfo = GetGitHubRepositoryInfo(GitRepository);
 
-            PublishRelease(new GitHubReleaseSettings()
+            PublishRelease(x => x
                     .SetArtifactPaths(GlobFiles(OutputDirectory, "*.nupkg").NotEmpty().ToArray())
                     .SetCommitSha(GitVersion.Sha)
                     .SetReleaseNotes(completeChangeLog)

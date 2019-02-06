@@ -9,21 +9,24 @@
     <NoWarn>CS0649;CS0169</NoWarn>
     
     <!-- NUKE CONFIGURATION -->
-    <NukeVersion>0.6.0</NukeVersion>
-    <NukeCodeGeneration>False</NukeCodeGeneration>
+    <NukeVersion>0.11.1</NukeVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="docfx.console" Version="2.37.2">
+    <PackageReference Include="docfx.console" Version="2.40.10">
       <ExcludeAssets>build</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="Nuke.Common" Version="0.6.0" />
+    <PackageReference Include="Nuke.Common" Version="$(NukeVersion)" />
     <PackageReference Include="Nuke.CodeGeneration" Version="$(NukeVersion)" />
-    <PackageReference Include="GitVersion.CommandLine" Version="4.0.0-beta0012" />
-    <PackageReference Include="Nuke.GitHub" Version="1.1.0" />
-    <PackageReference Include="xunit.runner.console" Version="2.4.0" />
-    <PackageReference Include="Nuke.WebDocu" Version="1.2.0" />
-    <PackageReference Include="Nuke.Azure.KeyVault" Version="0.2.0" />
+    <PackageReference Include="GitVersion.CommandLine" Version="4.0.0" />
+    <PackageReference Include="Nuke.GitHub" Version="1.3.5" />
+    <PackageReference Include="Nuke.DocFX" Version="0.1.1" />
+    <PackageReference Include="xunit.runner.console" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Nuke.WebDocu" Version="1.3.0" />
+    <PackageReference Include="Nuke.Azure.KeyVault" Version="0.4.2" />
   </ItemGroup>
 
   <ItemGroup>
