@@ -52,7 +52,7 @@ class Build : NukeBuild
     [KeyVaultSecret("NukeWebDeploy-DocuApiKey")] string DocuApiKey;
     [KeyVaultSecret] string NuGetApiKey;
 
-    [Solution("Dangl.AVACloud.sln")] readonly Solution Solution;
+    [Solution("Nuke.WebDeploy.sln")] readonly Solution Solution;
     AbsolutePath SolutionDirectory => Solution.Directory;
     AbsolutePath OutputDirectory => SolutionDirectory / "output";
     AbsolutePath SourceDirectory => SolutionDirectory / "src";
