@@ -43,7 +43,7 @@ class Build : NukeBuild
     [GitVersion] readonly GitVersion GitVersion;
     [GitRepository] readonly GitRepository GitRepository;
 
-    [Parameter] readonly string Configuration = IsLocalBuild ? "Debug" : "Release";
+    [Parameter] readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
     [KeyVaultSecret] string DocuBaseUrl;
     [KeyVaultSecret] string GitHubAuthenticationToken;
@@ -106,7 +106,7 @@ class Build : NukeBuild
         .DependsOn(Pack)
         .Requires(() => PublicMyGetSource)
         .Requires(() => PublicMyGetApiKey)
-        .Requires(() => Configuration.EqualsOrdinalIgnoreCase("Release"))
+        .Requires(() => Configuration == Configuration.Release)
         .Executes(() =>
         {
             GlobFiles(OutputDirectory, "*.nupkg").NotEmpty()
@@ -132,11 +132,10 @@ class Build : NukeBuild
         .DependsOn(Compile)
         .Executes(() =>
         {
-            void TestXunit()
-                => Xunit2(GlobFiles(SolutionDirectory, $"*/bin/{Configuration}/net4*/Nuke.*.Tests.dll").NotEmpty(),
-                    s => s.AddResultReport(Xunit2ResultFormat.Xml, OutputDirectory / "tests.xml").SetFramework("net461"));
-
-            TestXunit();
+            DotNetTest(x => x
+                .SetProjectFile(RootDirectory / "test" / "Nuke.WebDeploy.Tests")
+                .SetTestAdapterPath(".")
+                .SetLogger($"xunit;LogFilePath={OutputDirectory / "tests.xml"}"));
         });
 
     Target BuildDocFxMetadata => _ => _
@@ -176,7 +175,7 @@ class Build : NukeBuild
     Target PublishGitHubRelease => _ => _
         .DependsOn(Pack)
         .Requires(() => GitHubAuthenticationToken)
-        .OnlyWhen(() => GitVersion.BranchName.Equals("master") || GitVersion.BranchName.Equals("origin/master"))
+        .OnlyWhenStatic(() => GitVersion.BranchName.Equals("master") || GitVersion.BranchName.Equals("origin/master"))
         .Executes(() =>
         {
             var releaseTag = $"v{GitVersion.MajorMinorPatch}";
@@ -208,8 +207,8 @@ class Build : NukeBuild
         {
             GenerateCode(
                 specificationDirectory: RootDirectory / "src" / "Nuke.WebDeploy" / "MetaData",
-                generationBaseDirectory: RootDirectory / "src" / "Nuke.WebDeploy",
-                baseNamespace: "Nuke.WebDeploy"
+                namespaceProvider: x => "Nuke.WebDeploy",
+                outputFileProvider: x => RootDirectory / "src" / "Nuke.WebDeploy" / "WebDeploySettings.Generated.cs"
             );
         });
 }
