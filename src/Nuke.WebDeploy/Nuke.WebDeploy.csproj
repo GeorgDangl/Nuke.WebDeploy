@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Web.Deployment" Version="3.6.0" />
-    <PackageReference Include="Nuke.Common" Version="0.16.0" />
+    <PackageReference Include="Nuke.Common" Version="0.17.0" />
   </ItemGroup>
 
   <ItemGroup>

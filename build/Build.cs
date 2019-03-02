@@ -56,6 +56,7 @@ class Build : NukeBuild
     AbsolutePath SolutionDirectory => Solution.Directory;
     AbsolutePath OutputDirectory => SolutionDirectory / "output";
     AbsolutePath SourceDirectory => SolutionDirectory / "src";
+    AbsolutePath TestsDirectory => SolutionDirectory / "test";
 
     string DocFxFile => SolutionDirectory / "docfx.json";
     string ChangeLogFile => RootDirectory / "CHANGELOG.md";
@@ -63,7 +64,8 @@ class Build : NukeBuild
     Target Clean => _ => _
         .Executes(() =>
         {
-            DeleteDirectories(GlobDirectories(SourceDirectory, "**/bin", "**/obj"));
+            SourceDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
+            TestsDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
             EnsureCleanDirectory(OutputDirectory);
         });
 
@@ -133,6 +135,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             DotNetTest(x => x
+                .SetNoBuild(true)
                 .SetProjectFile(RootDirectory / "test" / "Nuke.WebDeploy.Tests")
                 .SetTestAdapterPath(".")
                 .SetLogger($"xunit;LogFilePath={OutputDirectory / "tests.xml"}"));
@@ -175,7 +178,7 @@ class Build : NukeBuild
     Target PublishGitHubRelease => _ => _
         .DependsOn(Pack)
         .Requires(() => GitHubAuthenticationToken)
-        .OnlyWhenStatic(() => GitVersion.BranchName.Equals("master") || GitVersion.BranchName.Equals("origin/master"))
+        .OnlyWhenDynamic(() => GitVersion.BranchName.Equals("master") || GitVersion.BranchName.Equals("origin/master"))
         .Executes(() =>
         {
             var releaseTag = $"v{GitVersion.MajorMinorPatch}";
