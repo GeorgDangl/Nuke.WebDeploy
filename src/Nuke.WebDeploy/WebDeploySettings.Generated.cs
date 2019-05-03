@@ -1,4 +1,4 @@
-// Generated with Nuke.CodeGeneration version 0.16.0 (Windows,.NETStandard,Version=v2.0)
+// Generated with Nuke.CodeGeneration version 0.19.0 (Windows,.NETStandard,Version=v2.0)
 
 using JetBrains.Annotations;
 using Newtonsoft.Json;
