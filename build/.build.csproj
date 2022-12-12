@@ -2,37 +2,34 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <RootNamespace></RootNamespace>
     <IsPackable>False</IsPackable>
     <NoWarn>CS0649;CS0169</NoWarn>
+    <NukeTelemetryVersion>1</NukeTelemetryVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="docfx.console" Version="2.42.0">
+    <PackageReference Include="docfx.console" Version="2.59.4">
       <ExcludeAssets>build</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="Nuke.Common" Version="0.19.0" />
-    <PackageReference Include="Nuke.CodeGeneration" Version="0.19.0" />
-    <PackageReference Include="GitVersion.CommandLine.DotNetCore" Version="5.0.0-beta2-75">
+    <PackageReference Include="Nuke.Common" Version="6.2.1" />
+    <PackageReference Include="Nuke.CodeGeneration" Version="6.2.1" />
+    <PackageReference Include="Nuke.GitHub" Version="3.0.0" />
+    <PackageReference Include="Nuke.DocFX" Version="0.3.0" />
+    <PackageReference Include="xunit.runner.console" Version="2.4.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Nuke.GitHub" Version="1.5.0" />
-    <PackageReference Include="Nuke.DocFX" Version="0.2.0" />
-    <PackageReference Include="xunit.runner.console" Version="2.4.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Nuke.WebDocu" Version="1.4.0" />
-    <PackageReference Include="Nuke.Azure.KeyVault" Version="0.4.5-beta0002" />
+    <PackageReference Include="Nuke.WebDocu" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <NukeMetadata Include="**/*.json" Exclude="bin/**;obj/**" />
-    <None Remove="*.csproj.dotsettings;_schema.json;*.ref.*.txt" />
     <None Remove="*.json;*.json.new" Condition="'$(NukeCodeGeneration)' == 'False'" />
   </ItemGroup>
-
+  <ItemGroup>
+    <PackageDownload Include="GitVersion.Tool" Version="[5.10.3]" />
+  </ItemGroup>
 </Project>

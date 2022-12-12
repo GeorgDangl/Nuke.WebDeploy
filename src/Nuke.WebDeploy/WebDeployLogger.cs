@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.Web.Deployment;
 using Nuke.Common;
+using Serilog;
 
 namespace Nuke.WebDeploy
 {
@@ -11,19 +12,19 @@ namespace Nuke.WebDeploy
             switch (e.EventLevel)
             {
                 case TraceLevel.Error:
-                    Logger.Error(e.Message);
+                    Log.Error(e.Message);
                     break;
 
                 case TraceLevel.Warning:
-                    Logger.Warn(e.Message);
+                    Log.Warning(e.Message);
                     break;
 
                 case TraceLevel.Info:
-                    Logger.Info(e.Message);
+                    Log.Information(e.Message);
                     break;
 
                 case TraceLevel.Verbose:
-                    Logger.Trace(e.Message);
+                    Log.Verbose(e.Message);
                     break;
             }
         }
