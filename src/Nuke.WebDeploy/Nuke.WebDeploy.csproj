@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <Description>WebDeploy for NUKE Build</Description>
     <Authors>Georg Dangl</Authors>
     <GeneratePackageOnBuild Condition="'$(Configuration)'=='Release'">True</GeneratePackageOnBuild>
@@ -23,8 +23,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Web.Deployment" Version="3.6.0" />
-    <PackageReference Include="Nuke.Common" Version="0.19.0" />
+    <PackageReference Include="Microsoft.Web.Deployment" Version="4.0.5" />
+    <PackageReference Include="Nuke.Common" Version="6.2.1" />
   </ItemGroup>
 
   <ItemGroup>

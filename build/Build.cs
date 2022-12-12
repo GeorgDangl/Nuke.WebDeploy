@@ -7,23 +7,21 @@ using static Nuke.WebDocu.WebDocuTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
-using static Nuke.Common.EnvironmentInfo;
-using static Nuke.Common.Tools.Xunit.XunitTasks;
-using Nuke.Common.Tools.Xunit;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.CodeGeneration.CodeGenerator;
 using System;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using Nuke.Common.Git;
 using Nuke.Common.Tools.GitVersion;
-using Nuke.Common.Utilities;
 using Nuke.GitHub;
 using static Nuke.GitHub.ChangeLogExtensions;
 using static Nuke.GitHub.GitHubTasks;
 using static Nuke.Common.ChangeLog.ChangelogTasks;
-using Nuke.Azure.KeyVault;
+using Nuke.Common.IO;
 using static Nuke.DocFX.DocFXTasks;
 using Nuke.Common.ProjectModel;
+using Nuke.Common.Tooling;
+using Nuke.Common.Tools.AzureKeyVault.Attributes;
 using Nuke.DocFX;
 
 class Build : NukeBuild
@@ -31,28 +29,51 @@ class Build : NukeBuild
     // Console application entry. Also defines the default target.
     public static int Main() => Execute<Build>(x => x.Test);
 
-    [KeyVaultSettings(
+    [Nuke.Common.Tools.AzureKeyVault.Attributes.KeyVaultSettings(
         BaseUrlParameterName = nameof(KeyVaultBaseUrl),
         ClientIdParameterName = nameof(KeyVaultClientId),
         ClientSecretParameterName = nameof(KeyVaultClientSecret))]
     readonly KeyVaultSettings KeyVaultSettings;
 
-    [Parameter] string KeyVaultBaseUrl;
-    [Parameter] string KeyVaultClientId;
-    [Parameter] string KeyVaultClientSecret;
-    [GitVersion] readonly GitVersion GitVersion;
-    [GitRepository] readonly GitRepository GitRepository;
+    [Parameter]
+    string KeyVaultBaseUrl;
 
-    [Parameter] readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
+    [Parameter]
+    string KeyVaultClientId;
 
-    [KeyVaultSecret] string DocuBaseUrl;
-    [KeyVaultSecret] string GitHubAuthenticationToken;
-    [KeyVaultSecret] string PublicMyGetSource;
-    [KeyVaultSecret] string PublicMyGetApiKey;
-    [KeyVaultSecret("NukeWebDeploy-DocuApiKey")] string DocuApiKey;
-    [KeyVaultSecret] string NuGetApiKey;
+    [Parameter]
+    string KeyVaultClientSecret;
 
-    [Solution("Nuke.WebDeploy.sln")] readonly Solution Solution;
+    [GitVersion]
+    readonly GitVersion GitVersion;
+
+    [GitRepository]
+    readonly GitRepository GitRepository;
+
+    [Parameter]
+    readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
+
+    [KeyVaultSecret]
+    string DocuBaseUrl;
+
+    [KeyVaultSecret]
+    string GitHubAuthenticationToken;
+
+    [KeyVaultSecret]
+    string PublicMyGetSource;
+
+    [KeyVaultSecret]
+    string PublicMyGetApiKey;
+
+    [KeyVaultSecret("NukeWebDeploy-DocuApiKey")]
+    string DocuApiKey;
+
+    [KeyVaultSecret]
+    string NuGetApiKey;
+
+    [Solution("Nuke.WebDeploy.sln")]
+    readonly Solution Solution;
+
     AbsolutePath SolutionDirectory => Solution.Directory;
     AbsolutePath OutputDirectory => SolutionDirectory / "output";
     AbsolutePath SourceDirectory => SolutionDirectory / "src";
@@ -83,7 +104,7 @@ class Build : NukeBuild
             DotNetBuild(x => x
                 .SetConfiguration(Configuration)
                 .EnableNoRestore()
-                .SetFileVersion(GitVersion.GetNormalizedFileVersion())
+                .SetFileVersion(GitVersion.AssemblySemFileVer)
                 .SetAssemblyVersion(GitVersion.AssemblySemVer)
                 .SetInformationalVersion(GitVersion.InformationalVersion));
         });
@@ -138,7 +159,7 @@ class Build : NukeBuild
                 .SetNoBuild(true)
                 .SetProjectFile(RootDirectory / "test" / "Nuke.WebDeploy.Tests")
                 .SetTestAdapterPath(".")
-                .SetLogger($"xunit;LogFilePath={OutputDirectory / "tests.xml"}"));
+                .SetLoggers($"xunit;LogFilePath={OutputDirectory / "tests.xml"}"));
         });
 
     Target BuildDocFxMetadata => _ => _
@@ -209,9 +230,21 @@ class Build : NukeBuild
         .Executes(() =>
         {
             GenerateCode(
-                specificationDirectory: RootDirectory / "src" / "Nuke.WebDeploy" / "MetaData",
+                specificationFile: RootDirectory / "src" / "Nuke.WebDeploy" / "MetaData" / "WebDeploySettings.json",
                 namespaceProvider: x => "Nuke.WebDeploy",
                 outputFileProvider: x => RootDirectory / "src" / "Nuke.WebDeploy" / "WebDeploySettings.Generated.cs"
             );
         });
+}
+
+[TypeConverter(typeof(TypeConverter<Configuration>))]
+public class Configuration : Enumeration
+{
+    public static Configuration Debug = new Configuration { Value = nameof(Debug) };
+    public static Configuration Release = new Configuration { Value = nameof(Release) };
+
+    public static implicit operator string(Configuration configuration)
+    {
+        return configuration.Value;
+    }
 }

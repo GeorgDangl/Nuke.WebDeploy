@@ -1,4 +1,3 @@
-// Generated with Nuke.CodeGeneration version 0.19.0 (Windows,.NETStandard,Version=v2.0)
 
 using JetBrains.Annotations;
 using Newtonsoft.Json;
@@ -96,7 +95,7 @@ namespace Nuke.WebDeploy
         ///   <p>The PublishUrl should include the site parameter, e.g.: https://appname.scm.azurewebsites.net:443/msdeploy.axd?site=appname</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings SetPublishUrl(this WebDeploySettings toolSettings, string publishUrl)
+        public static T SetPublishUrl<T>(this T toolSettings, string publishUrl) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.PublishUrl = publishUrl;
@@ -107,7 +106,7 @@ namespace Nuke.WebDeploy
         ///   <p>The PublishUrl should include the site parameter, e.g.: https://appname.scm.azurewebsites.net:443/msdeploy.axd?site=appname</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings ResetPublishUrl(this WebDeploySettings toolSettings)
+        public static T ResetPublishUrl<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.PublishUrl = null;
@@ -120,7 +119,7 @@ namespace Nuke.WebDeploy
         ///   <p>The username used for the deployment via http basic authentication</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings SetUsername(this WebDeploySettings toolSettings, string username)
+        public static T SetUsername<T>(this T toolSettings, string username) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.Username = username;
@@ -131,7 +130,7 @@ namespace Nuke.WebDeploy
         ///   <p>The username used for the deployment via http basic authentication</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings ResetUsername(this WebDeploySettings toolSettings)
+        public static T ResetUsername<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.Username = null;
@@ -144,7 +143,7 @@ namespace Nuke.WebDeploy
         ///   <p>The password used for the deployment via http basic authentication</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings SetPassword(this WebDeploySettings toolSettings, string password)
+        public static T SetPassword<T>(this T toolSettings, string password) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.Password = password;
@@ -155,7 +154,7 @@ namespace Nuke.WebDeploy
         ///   <p>The password used for the deployment via http basic authentication</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings ResetPassword(this WebDeploySettings toolSettings)
+        public static T ResetPassword<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.Password = null;
@@ -168,7 +167,7 @@ namespace Nuke.WebDeploy
         ///   <p>Toggles enabling of the DoNotDelete rule</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings SetEnableDoNotDeleteRule(this WebDeploySettings toolSettings, bool? enableDoNotDeleteRule)
+        public static T SetEnableDoNotDeleteRule<T>(this T toolSettings, bool? enableDoNotDeleteRule) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.EnableDoNotDeleteRule = enableDoNotDeleteRule;
@@ -179,7 +178,7 @@ namespace Nuke.WebDeploy
         ///   <p>Toggles enabling of the DoNotDelete rule</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings ResetEnableDoNotDeleteRule(this WebDeploySettings toolSettings)
+        public static T ResetEnableDoNotDeleteRule<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.EnableDoNotDeleteRule = null;
@@ -190,7 +189,7 @@ namespace Nuke.WebDeploy
         ///   <p>Toggles enabling of the DoNotDelete rule</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings EnableEnableDoNotDeleteRule(this WebDeploySettings toolSettings)
+        public static T EnableEnableDoNotDeleteRule<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.EnableDoNotDeleteRule = true;
@@ -201,7 +200,7 @@ namespace Nuke.WebDeploy
         ///   <p>Toggles enabling of the DoNotDelete rule</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings DisableEnableDoNotDeleteRule(this WebDeploySettings toolSettings)
+        public static T DisableEnableDoNotDeleteRule<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.EnableDoNotDeleteRule = false;
@@ -212,7 +211,7 @@ namespace Nuke.WebDeploy
         ///   <p>Toggles enabling of the DoNotDelete rule</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings ToggleEnableDoNotDeleteRule(this WebDeploySettings toolSettings)
+        public static T ToggleEnableDoNotDeleteRule<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.EnableDoNotDeleteRule = !toolSettings.EnableDoNotDeleteRule;
@@ -225,7 +224,7 @@ namespace Nuke.WebDeploy
         ///   <p>Toggles enabling of the AppOfflineRule. If enabled, WebDeploy will create a file called App_Offline.htm before copying the content and remove it afterwards. This makes IIS suspend the site during the deployment process and frees locked files.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings SetEnableAppOfflineRule(this WebDeploySettings toolSettings, bool? enableAppOfflineRule)
+        public static T SetEnableAppOfflineRule<T>(this T toolSettings, bool? enableAppOfflineRule) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.EnableAppOfflineRule = enableAppOfflineRule;
@@ -236,7 +235,7 @@ namespace Nuke.WebDeploy
         ///   <p>Toggles enabling of the AppOfflineRule. If enabled, WebDeploy will create a file called App_Offline.htm before copying the content and remove it afterwards. This makes IIS suspend the site during the deployment process and frees locked files.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings ResetEnableAppOfflineRule(this WebDeploySettings toolSettings)
+        public static T ResetEnableAppOfflineRule<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.EnableAppOfflineRule = null;
@@ -247,7 +246,7 @@ namespace Nuke.WebDeploy
         ///   <p>Toggles enabling of the AppOfflineRule. If enabled, WebDeploy will create a file called App_Offline.htm before copying the content and remove it afterwards. This makes IIS suspend the site during the deployment process and frees locked files.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings EnableEnableAppOfflineRule(this WebDeploySettings toolSettings)
+        public static T EnableEnableAppOfflineRule<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.EnableAppOfflineRule = true;
@@ -258,7 +257,7 @@ namespace Nuke.WebDeploy
         ///   <p>Toggles enabling of the AppOfflineRule. If enabled, WebDeploy will create a file called App_Offline.htm before copying the content and remove it afterwards. This makes IIS suspend the site during the deployment process and frees locked files.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings DisableEnableAppOfflineRule(this WebDeploySettings toolSettings)
+        public static T DisableEnableAppOfflineRule<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.EnableAppOfflineRule = false;
@@ -269,7 +268,7 @@ namespace Nuke.WebDeploy
         ///   <p>Toggles enabling of the AppOfflineRule. If enabled, WebDeploy will create a file called App_Offline.htm before copying the content and remove it afterwards. This makes IIS suspend the site during the deployment process and frees locked files.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings ToggleEnableAppOfflineRule(this WebDeploySettings toolSettings)
+        public static T ToggleEnableAppOfflineRule<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.EnableAppOfflineRule = !toolSettings.EnableAppOfflineRule;
@@ -282,7 +281,7 @@ namespace Nuke.WebDeploy
         ///   <p>If enabled, no actual operations are performed. The output is still printed to the console to display what would have happened.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings SetShowWhatIf(this WebDeploySettings toolSettings, bool? showWhatIf)
+        public static T SetShowWhatIf<T>(this T toolSettings, bool? showWhatIf) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.ShowWhatIf = showWhatIf;
@@ -293,7 +292,7 @@ namespace Nuke.WebDeploy
         ///   <p>If enabled, no actual operations are performed. The output is still printed to the console to display what would have happened.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings ResetShowWhatIf(this WebDeploySettings toolSettings)
+        public static T ResetShowWhatIf<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.ShowWhatIf = null;
@@ -304,7 +303,7 @@ namespace Nuke.WebDeploy
         ///   <p>If enabled, no actual operations are performed. The output is still printed to the console to display what would have happened.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings EnableShowWhatIf(this WebDeploySettings toolSettings)
+        public static T EnableShowWhatIf<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.ShowWhatIf = true;
@@ -315,7 +314,7 @@ namespace Nuke.WebDeploy
         ///   <p>If enabled, no actual operations are performed. The output is still printed to the console to display what would have happened.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings DisableShowWhatIf(this WebDeploySettings toolSettings)
+        public static T DisableShowWhatIf<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.ShowWhatIf = false;
@@ -326,7 +325,7 @@ namespace Nuke.WebDeploy
         ///   <p>If enabled, no actual operations are performed. The output is still printed to the console to display what would have happened.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings ToggleShowWhatIf(this WebDeploySettings toolSettings)
+        public static T ToggleShowWhatIf<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.ShowWhatIf = !toolSettings.ShowWhatIf;
@@ -339,7 +338,7 @@ namespace Nuke.WebDeploy
         ///   <p>The name of the site for web deploy.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings SetSiteName(this WebDeploySettings toolSettings, string siteName)
+        public static T SetSiteName<T>(this T toolSettings, string siteName) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.SiteName = siteName;
@@ -350,7 +349,7 @@ namespace Nuke.WebDeploy
         ///   <p>The name of the site for web deploy.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings ResetSiteName(this WebDeploySettings toolSettings)
+        public static T ResetSiteName<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.SiteName = null;
@@ -363,7 +362,7 @@ namespace Nuke.WebDeploy
         ///   <p>The source folder that should be synced to, e.g. the local publish folder.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings SetSourcePath(this WebDeploySettings toolSettings, string sourcePath)
+        public static T SetSourcePath<T>(this T toolSettings, string sourcePath) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.SourcePath = sourcePath;
@@ -374,7 +373,7 @@ namespace Nuke.WebDeploy
         ///   <p>The source folder that should be synced to, e.g. the local publish folder.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings ResetSourcePath(this WebDeploySettings toolSettings)
+        public static T ResetSourcePath<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.SourcePath = null;
@@ -387,7 +386,7 @@ namespace Nuke.WebDeploy
         ///   <p>Count of retry attempts to perform before giving up. This is useful when sites take a few moments to spin down and release locked files.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings SetRetryAttempts(this WebDeploySettings toolSettings, int? retryAttempts)
+        public static T SetRetryAttempts<T>(this T toolSettings, int? retryAttempts) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.RetryAttempts = retryAttempts;
@@ -398,7 +397,7 @@ namespace Nuke.WebDeploy
         ///   <p>Count of retry attempts to perform before giving up. This is useful when sites take a few moments to spin down and release locked files.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings ResetRetryAttempts(this WebDeploySettings toolSettings)
+        public static T ResetRetryAttempts<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.RetryAttempts = null;
@@ -411,7 +410,7 @@ namespace Nuke.WebDeploy
         ///   <p>Delay in milliseconds between retry attempts.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings SetRetryInterval(this WebDeploySettings toolSettings, int? retryInterval)
+        public static T SetRetryInterval<T>(this T toolSettings, int? retryInterval) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.RetryInterval = retryInterval;
@@ -422,7 +421,7 @@ namespace Nuke.WebDeploy
         ///   <p>Delay in milliseconds between retry attempts.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings ResetRetryInterval(this WebDeploySettings toolSettings)
+        public static T ResetRetryInterval<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.RetryInterval = null;
@@ -435,7 +434,7 @@ namespace Nuke.WebDeploy
         ///   <p>Azure Web Apps in IIS are case sensitive and only accept all-lowercase app_offline.htm files. If this is toggled, an appropriately named file is created on the destination before deployment and deleted afterwards.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings SetWrapAppOffline(this WebDeploySettings toolSettings, bool? wrapAppOffline)
+        public static T SetWrapAppOffline<T>(this T toolSettings, bool? wrapAppOffline) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.WrapAppOffline = wrapAppOffline;
@@ -446,7 +445,7 @@ namespace Nuke.WebDeploy
         ///   <p>Azure Web Apps in IIS are case sensitive and only accept all-lowercase app_offline.htm files. If this is toggled, an appropriately named file is created on the destination before deployment and deleted afterwards.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings ResetWrapAppOffline(this WebDeploySettings toolSettings)
+        public static T ResetWrapAppOffline<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.WrapAppOffline = null;
@@ -457,7 +456,7 @@ namespace Nuke.WebDeploy
         ///   <p>Azure Web Apps in IIS are case sensitive and only accept all-lowercase app_offline.htm files. If this is toggled, an appropriately named file is created on the destination before deployment and deleted afterwards.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings EnableWrapAppOffline(this WebDeploySettings toolSettings)
+        public static T EnableWrapAppOffline<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.WrapAppOffline = true;
@@ -468,7 +467,7 @@ namespace Nuke.WebDeploy
         ///   <p>Azure Web Apps in IIS are case sensitive and only accept all-lowercase app_offline.htm files. If this is toggled, an appropriately named file is created on the destination before deployment and deleted afterwards.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings DisableWrapAppOffline(this WebDeploySettings toolSettings)
+        public static T DisableWrapAppOffline<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.WrapAppOffline = false;
@@ -479,7 +478,7 @@ namespace Nuke.WebDeploy
         ///   <p>Azure Web Apps in IIS are case sensitive and only accept all-lowercase app_offline.htm files. If this is toggled, an appropriately named file is created on the destination before deployment and deleted afterwards.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings ToggleWrapAppOffline(this WebDeploySettings toolSettings)
+        public static T ToggleWrapAppOffline<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.WrapAppOffline = !toolSettings.WrapAppOffline;
@@ -492,7 +491,7 @@ namespace Nuke.WebDeploy
         ///   <p>A html string that is used for the content of the App_Offline.htm file. If not specified, a default message is shown.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings SetAppOfflineHtmlTemplate(this WebDeploySettings toolSettings, string appOfflineHtmlTemplate)
+        public static T SetAppOfflineHtmlTemplate<T>(this T toolSettings, string appOfflineHtmlTemplate) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.AppOfflineHtmlTemplate = appOfflineHtmlTemplate;
@@ -503,7 +502,7 @@ namespace Nuke.WebDeploy
         ///   <p>A html string that is used for the content of the App_Offline.htm file. If not specified, a default message is shown.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings ResetAppOfflineHtmlTemplate(this WebDeploySettings toolSettings)
+        public static T ResetAppOfflineHtmlTemplate<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.AppOfflineHtmlTemplate = null;
@@ -516,7 +515,7 @@ namespace Nuke.WebDeploy
         ///   <p>Additional web deploy sync parameters.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings SetParameters(this WebDeploySettings toolSettings, IDictionary<string, string> parameters)
+        public static T SetParameters<T>(this T toolSettings, IDictionary<string, string> parameters) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.ParametersInternal = parameters.ToDictionary(x => x.Key, x => x.Value, StringComparer.OrdinalIgnoreCase);
@@ -527,7 +526,7 @@ namespace Nuke.WebDeploy
         ///   <p>Additional web deploy sync parameters.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings ClearParameters(this WebDeploySettings toolSettings)
+        public static T ClearParameters<T>(this T toolSettings) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.ParametersInternal.Clear();
@@ -538,7 +537,7 @@ namespace Nuke.WebDeploy
         ///   <p>Additional web deploy sync parameters.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings AddParameter(this WebDeploySettings toolSettings, string parameterKey, string parameterValue)
+        public static T AddParameter<T>(this T toolSettings, string parameterKey, string parameterValue) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.ParametersInternal.Add(parameterKey, parameterValue);
@@ -549,7 +548,7 @@ namespace Nuke.WebDeploy
         ///   <p>Additional web deploy sync parameters.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings RemoveParameter(this WebDeploySettings toolSettings, string parameterKey)
+        public static T RemoveParameter<T>(this T toolSettings, string parameterKey) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.ParametersInternal.Remove(parameterKey);
@@ -560,7 +559,7 @@ namespace Nuke.WebDeploy
         ///   <p>Additional web deploy sync parameters.</p>
         /// </summary>
         [Pure]
-        public static WebDeploySettings SetParameter(this WebDeploySettings toolSettings, string parameterKey, string parameterValue)
+        public static T SetParameter<T>(this T toolSettings, string parameterKey, string parameterValue) where T : WebDeploySettings
         {
             toolSettings = toolSettings.NewInstance();
             toolSettings.ParametersInternal[parameterKey] = parameterValue;
