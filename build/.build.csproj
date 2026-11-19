@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ReverseMarkdown" Version="4.6.0" />
     <PackageReference Include="docfx.console" Version="2.42.0">
       <ExcludeAssets>build</ExcludeAssets>
     </PackageReference>

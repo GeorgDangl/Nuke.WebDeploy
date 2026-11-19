@@ -148,6 +148,9 @@ class Build : NukeBuild
             DocFXMetadata(x => x.AddProjects(DocFxFile));
         });
 
+    Target TestMarkdownDocumentation => _ => _
+        .Executes(() => MarkdownDocumentationTests.Run(OutputDirectory / "markdown-tests"));
+
     Target BuildDocumentation => _ => _
         .DependsOn(Clean)
         .DependsOn(BuildDocFxMetadata)
@@ -160,6 +163,9 @@ class Build : NukeBuild
 
             File.Delete(SolutionDirectory / "index.md");
             Directory.Delete(SolutionDirectory / "api", true);
+
+            MarkdownDocumentation.Build(SolutionDirectory, OutputDirectory / "docs",
+                OutputDirectory / "docs-markdown", requireApi: true);
         });
 
     Target UploadDocumentation => _ => _
@@ -169,10 +175,12 @@ class Build : NukeBuild
         .Requires(() => !string.IsNullOrWhiteSpace(DocuBaseUrl))
         .Executes(() =>
         {
-            WebDocu(s => s.SetDocuBaseUrl(DocuBaseUrl)
-                .SetDocuApiKey(DocuApiKey)
-                .SetSourceDirectory(OutputDirectory / "docs")
-                .SetVersion(GitVersion.NuGetVersion));
+            MarkdownDocumentation.Publish(DocuBaseUrl, DocuApiKey, GitVersion.NuGetVersion,
+                OutputDirectory / "docs-markdown.zip",
+                () => WebDocu(s => s.SetDocuBaseUrl(DocuBaseUrl)
+                    .SetDocuApiKey(DocuApiKey)
+                    .SetSourceDirectory(OutputDirectory / "docs")
+                    .SetVersion(GitVersion.NuGetVersion)));
         });
 
     Target PublishGitHubRelease => _ => _
