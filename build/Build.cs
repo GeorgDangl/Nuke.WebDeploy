@@ -1,56 +1,59 @@
-﻿using System.IO;
+using Serilog;
+using Fallout.Common.IO;
+using System.IO;
 using System.Linq;
-using Nuke.Common.Tools.DotNet;
-using Nuke.Common;
-using Nuke.WebDocu;
-using static Nuke.WebDocu.WebDocuTasks;
-using static Nuke.Common.Tools.DotNet.DotNetTasks;
-using static Nuke.Common.IO.FileSystemTasks;
-using static Nuke.Common.IO.PathConstruction;
-using static Nuke.Common.EnvironmentInfo;
-using static Nuke.Common.Tools.Xunit.XunitTasks;
-using Nuke.Common.Tools.Xunit;
-using Nuke.Common.Utilities.Collections;
-using static Nuke.CodeGeneration.CodeGenerator;
+using Fallout.Common.Tools.DotNet;
+using Fallout.Common;
+using Fallout.WebDocu;
+using static Fallout.WebDocu.WebDocuTasks;
+using static Fallout.Common.Tools.DotNet.DotNetTasks;
+using static Fallout.Common.IO.PathConstruction;
+using static Fallout.Common.EnvironmentInfo;
+using Fallout.Common.Utilities.Collections;
 using System;
 using System.Threading.Tasks;
-using Nuke.Common.Git;
-using Nuke.Common.Tools.GitVersion;
-using Nuke.Common.Utilities;
-using Nuke.GitHub;
-using static Nuke.GitHub.ChangeLogExtensions;
-using static Nuke.GitHub.GitHubTasks;
-using static Nuke.Common.ChangeLog.ChangelogTasks;
-using Nuke.Azure.KeyVault;
-using static Nuke.DocFX.DocFXTasks;
-using Nuke.Common.ProjectModel;
-using Nuke.DocFX;
+using Fallout.Common.Git;
+using Fallout.Common.Tools.GitVersion;
+using Fallout.Common.Utilities;
+using Fallout.GitHub;
+using static Fallout.GitHub.ChangeLogExtensions;
+using static Fallout.GitHub.GitHubTasks;
+using static Fallout.Common.ChangeLog.ChangelogTasks;
+using Fallout.Common.Tools.AzureKeyVault;
+using static Fallout.Common.Tools.DocFX.DocFXTasks;
+using Fallout.Common.ProjectModel;
+using Fallout.Common.Tools.DocFX;
 
-class Build : NukeBuild
+partial class Build : FalloutBuild
 {
     // Console application entry. Also defines the default target.
+    Target TestMarkdownDocumentation => _ => _
+        .Executes(() => MarkdownDocumentationTests.Run(OutputDirectory / "markdown-tests"));
+
     public static int Main() => Execute<Build>(x => x.Test);
 
-    [KeyVaultSettings(
+    [AzureKeyVaultConfiguration(
         BaseUrlParameterName = nameof(KeyVaultBaseUrl),
         ClientIdParameterName = nameof(KeyVaultClientId),
-        ClientSecretParameterName = nameof(KeyVaultClientSecret))]
-    readonly KeyVaultSettings KeyVaultSettings;
+        ClientSecretParameterName = nameof(KeyVaultClientSecret),
+    TenantIdParameterName = nameof(KeyVaultTenantId))]
+    readonly AzureKeyVaultConfiguration AzureKeyVaultConfiguration;
 
     [Parameter] string KeyVaultBaseUrl;
     [Parameter] string KeyVaultClientId;
     [Parameter] string KeyVaultClientSecret;
-    [GitVersion] readonly GitVersion GitVersion;
+    [Parameter] string KeyVaultTenantId;
+    [GitVersion(Framework = "netcoreapp3.1")] readonly GitVersion GitVersion;
     [GitRepository] readonly GitRepository GitRepository;
 
     [Parameter] readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
-    [KeyVaultSecret] string DocuBaseUrl;
-    [KeyVaultSecret] string GitHubAuthenticationToken;
-    [KeyVaultSecret] string PublicMyGetSource;
-    [KeyVaultSecret] string PublicMyGetApiKey;
-    [KeyVaultSecret("NukeWebDeploy-DocuApiKey")] string DocuApiKey;
-    [KeyVaultSecret] string NuGetApiKey;
+    [AzureKeyVaultSecret] string DocuBaseUrl;
+    [AzureKeyVaultSecret] string GitHubAuthenticationToken;
+    [AzureKeyVaultSecret] string PublicMyGetSource;
+    [AzureKeyVaultSecret] string PublicMyGetApiKey;
+    [AzureKeyVaultSecret("NukeWebDeploy-DocuApiKey")] string DocuApiKey;
+    [AzureKeyVaultSecret] string NuGetApiKey;
 
     [Solution("Nuke.WebDeploy.sln")] readonly Solution Solution;
     AbsolutePath SolutionDirectory => Solution.Directory;
@@ -64,26 +67,26 @@ class Build : NukeBuild
     Target Clean => _ => _
         .Executes(() =>
         {
-            SourceDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
-            TestsDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
-            EnsureCleanDirectory(OutputDirectory);
+            SourceDirectory.GlobDirectories("**/bin", "**/obj").ForEach(x => x.DeleteDirectory());
+            TestsDirectory.GlobDirectories("**/bin", "**/obj").ForEach(x => x.DeleteDirectory());
+            OutputDirectory.CreateOrCleanDirectory();
         });
 
     Target Restore => _ => _
         .DependsOn(Clean)
         .Executes(() =>
         {
-            DotNetRestore();
+            DotNetRestore(s => s.SetProjectFile(Solution));
         });
 
     Target Compile => _ => _
         .DependsOn(Generate)
         .Executes(() =>
         {
-            DotNetBuild(x => x
+            DotNetBuild(x => x.SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
                 .EnableNoRestore()
-                .SetFileVersion(GitVersion.GetNormalizedFileVersion())
+                .SetFileVersion(GitVersion.AssemblySemFileVer)
                 .SetAssemblyVersion(GitVersion.AssemblySemVer)
                 .SetInformationalVersion(GitVersion.InformationalVersion));
         });
@@ -95,13 +98,13 @@ class Build : NukeBuild
             var changeLog = GetCompleteChangeLog(ChangeLogFile)
                 .EscapeStringPropertyForMsBuild();
 
-            DotNetPack(x => x
+            DotNetPack(x => x.SetProject(Solution)
                 .SetConfiguration(Configuration)
                 .SetPackageReleaseNotes(changeLog)
                 .SetTitle("WebDeploy for NUKE Build - www.dangl-it.com")
                 .EnableNoBuild()
                 .SetOutputDirectory(OutputDirectory)
-                .SetVersion(GitVersion.NuGetVersion));
+                                    .SetVersion(GitVersion.NuGetVersion));
         });
 
     Target Push => _ => _
@@ -111,8 +114,10 @@ class Build : NukeBuild
         .Requires(() => Configuration == Configuration.Release)
         .Executes(() =>
         {
-            GlobFiles(OutputDirectory, "*.nupkg").NotEmpty()
-                .Where(x => !x.EndsWith("symbols.nupkg"))
+            var packages = OutputDirectory.GlobFiles("*.nupkg");
+            Assert.NotEmpty(packages);
+            packages
+                .Where(x => !x.ToString().EndsWith("symbols.nupkg"))
                 .ForEach(x => DotNetNuGetPush(s => s
                     .SetTargetPath(x)
                     .SetSource(PublicMyGetSource)
@@ -121,8 +126,8 @@ class Build : NukeBuild
             if (GitVersion.BranchName.Equals("master") || GitVersion.BranchName.Equals("origin/master"))
             {
                 // Stable releases are published to NuGet
-                GlobFiles(OutputDirectory, "*.nupkg").NotEmpty()
-                    .Where(x => !x.EndsWith("symbols.nupkg"))
+                packages
+                    .Where(x => !x.ToString().EndsWith("symbols.nupkg"))
                     .ForEach(x => DotNetNuGetPush(s => s
                         .SetTargetPath(x)
                         .SetSource("https://api.nuget.org/v3/index.json")
@@ -138,18 +143,15 @@ class Build : NukeBuild
                 .SetNoBuild(true)
                 .SetProjectFile(RootDirectory / "test" / "Nuke.WebDeploy.Tests")
                 .SetTestAdapterPath(".")
-                .SetLogger($"xunit;LogFilePath={OutputDirectory / "tests.xml"}"));
+                .SetLoggers($"xunit;LogFilePath={OutputDirectory / "tests.xml"}"));
         });
 
     Target BuildDocFxMetadata => _ => _
         .DependsOn(Restore)
         .Executes(() =>
         {
-            DocFXMetadata(x => x.AddProjects(DocFxFile));
+            RunDocFx("metadata", DocFxFile);
         });
-
-    Target TestMarkdownDocumentation => _ => _
-        .Executes(() => MarkdownDocumentationTests.Run(OutputDirectory / "markdown-tests"));
 
     Target BuildDocumentation => _ => _
         .DependsOn(Clean)
@@ -159,13 +161,12 @@ class Build : NukeBuild
             // Using README.md as index.md
             File.Copy(SolutionDirectory / "README.md", SolutionDirectory / "index.md");
 
-            DocFXBuild(x => x.SetConfigFile(DocFxFile));
+            RunDocFx("build", DocFxFile);
+
+            MarkdownDocumentation.Create(DocFxFile, OutputDirectory / "docs-markdown");
 
             File.Delete(SolutionDirectory / "index.md");
             Directory.Delete(SolutionDirectory / "api", true);
-
-            MarkdownDocumentation.Build(SolutionDirectory, OutputDirectory / "docs",
-                OutputDirectory / "docs-markdown", requireApi: true);
         });
 
     Target UploadDocumentation => _ => _
@@ -175,12 +176,12 @@ class Build : NukeBuild
         .Requires(() => !string.IsNullOrWhiteSpace(DocuBaseUrl))
         .Executes(() =>
         {
-            MarkdownDocumentation.Publish(DocuBaseUrl, DocuApiKey, GitVersion.NuGetVersion,
-                OutputDirectory / "docs-markdown.zip",
-                () => WebDocu(s => s.SetDocuBaseUrl(DocuBaseUrl)
+            WebDocu(s => s.SetDocuBaseUrl(DocuBaseUrl)
                     .SetDocuApiKey(DocuApiKey)
                     .SetSourceDirectory(OutputDirectory / "docs")
-                    .SetVersion(GitVersion.NuGetVersion)));
+                    .SetMarkdownPackagePath(OutputDirectory / "docs-markdown.zip")
+                    .SetVersion(GitVersion.NuGetVersion)
+                    .SetSkipForVersionConflicts(false));
         });
 
     Target PublishGitHubRelease => _ => _
@@ -198,8 +199,10 @@ class Build : NukeBuild
 
             var repositoryInfo = GetGitHubRepositoryInfo(GitRepository);
 
+            var packages = OutputDirectory.GlobFiles("*.nupkg");
+            Assert.NotEmpty(packages);
             PublishRelease(x => x
-                    .SetArtifactPaths(GlobFiles(OutputDirectory, "*.nupkg").NotEmpty().ToArray())
+                    .SetArtifactPaths(packages.Select(x => x.ToString()).ToArray())
                     .SetCommitSha(GitVersion.Sha)
                     .SetReleaseNotes(completeChangeLog)
                     .SetRepositoryName(repositoryInfo.repositoryName)
@@ -216,10 +219,7 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .Executes(() =>
         {
-            GenerateCode(
-                specificationDirectory: RootDirectory / "src" / "Nuke.WebDeploy" / "MetaData",
-                namespaceProvider: x => "Nuke.WebDeploy",
-                outputFileProvider: x => RootDirectory / "src" / "Nuke.WebDeploy" / "WebDeploySettings.Generated.cs"
-            );
+            var generator = RootDirectory / "build" / "LegacyCodeGeneration" / "LegacyCodeGeneration.csproj";
+            DotNet($"run --project \"{generator}\" -- \"{RootDirectory}\"");
         });
 }

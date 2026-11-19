@@ -262,3 +262,5 @@ __pycache__/
 
 output/
 api/
+
+.fallout/temp/

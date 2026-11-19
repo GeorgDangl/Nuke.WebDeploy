@@ -1,0 +1,4 @@
+{
+  "Solution": "./Nuke.WebDeploy.sln",
+  "BuildProjectFile": "build/.build.csproj"
+}

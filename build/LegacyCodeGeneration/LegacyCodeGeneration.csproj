@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <RollForward>Major</RollForward>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- The product still targets the legacy NUKE API; do not generate Fallout product types. -->
+    <PackageReference Include="Nuke.CodeGeneration" Version="0.19.1" />
+    <PackageReference Include="Nuke.Common" Version="0.19.1" ExcludeAssets="build;buildTransitive" />
+  </ItemGroup>
+</Project>

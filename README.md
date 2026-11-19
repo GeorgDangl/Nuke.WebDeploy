@@ -53,21 +53,26 @@ The `PublishUrl` should include the `site` parameter, e.g.:
 
 [This project is available under the MIT license.](LICENSE.md)
 
-
 ## Markdown documentation publishing
 
-`BuildDocumentation` also generates `output/docs-markdown` and `output/docs-markdown.zip`.
-Start with `index.md` (the source README), or `toc.md` for all articles and API pages.
-Changelog/license text and linked documentation assets are included; the ZIP has no
-enclosing directory.
+The documentation builder uses Fallout.Common 10.5.0 and requires .NET SDK 10.0.100
+or later. Product target frameworks are unchanged. Run `build.sh` or `build.ps1`.
+`BuildDocumentation` uses DocFX 2.78.5 and packages the configured Markdown,
+TOC and resource mappings without modifying source files. API documentation,
+where configured, also uses native DocFX Markdown metadata with the same scope.
 
-The Markdown renderer converts the existing published DocFX article HTML, including
-API signatures, code examples and anchors. This keeps the current documentation
-toolchain and public project boundaries intact, without requiring newer DocFX or
-migrating the legacy NUKE build. It does not modify documentation sources.
+The Markdown directory is `output/docs-markdown`; its sibling `.zip` has a root
+`index.md` and includes mapped documentation assets. `UploadDocumentation` uses
+the official Dangl.Fallout.WebDocu 8.0.1 package with `SetMarkdownPackagePath`,
+the existing explicit version, credentials, downloadable assets and conflict policy.
+No custom HTTP uploader is used. Deployment targets require real credentials;
+use `--help` or `--plan` for safe build-graph inspection.
 
-`UploadDocumentation` uploads HTML first, then sends the Markdown ZIP to
-`/API/MarkdownDocuments/Upload` with the same API key and exact version. Generation
-or upload errors fail publishing; existing branch gates and version-conflict policies
-are preserved. `TestMarkdownDocumentation` exercises packaging, links, assets,
-failure handling and the multipart contract using only a local HTTP server.
+`TestMarkdownDocumentation` checks packaging, navigation and asset preservation locally.
+
+The product remains `Nuke.WebDeploy` with its existing target framework and package identity.
+The Fallout builder runs the original NUKE product code generator in an isolated
+`build/LegacyCodeGeneration` process so generated product code continues to use the NUKE API.
+
+Azure Key Vault authentication also requires `KeyVaultTenantId` (Jenkins credential
+`AzureKeyVaultTenantId`), alongside the existing vault URL, client ID and client secret.

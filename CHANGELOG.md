@@ -2,6 +2,9 @@
 
 All notable changes to **Nuke.WebDeploy** are documented here.
 
+## Unreleased
+- Migrate the build to Fallout and publish native Markdown documentation with the official Fallout.WebDocu package.
+
 ## v1.3.0:
 - Update to NUKE 0.19.0
 

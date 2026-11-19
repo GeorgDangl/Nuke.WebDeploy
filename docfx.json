@@ -17,6 +17,25 @@
       "properties": {
         "TargetFramework": "net461"
       }
+    },
+    {
+      "src": [
+        {
+          "src": "src",
+          "files": [
+            "Nuke.WebDeploy/*.csproj"
+          ],
+          "exclude": [
+            "**/bin/**",
+            "**/obj/**"
+          ]
+        }
+      ],
+      "dest": "output/docs-markdown/api",
+      "properties": {
+        "TargetFramework": "net461"
+      },
+      "outputFormat": "markdown"
     }
   ],
   "build": {
@@ -28,7 +47,11 @@
         ],
         "exclude": [
           "output/**/*",
-          "GitVersion.yml"
+          "GitVersion.yml",
+          "**/bin/**",
+          "**/obj/**",
+          ".fallout/**",
+          "build/**"
         ]
       }
     ],
@@ -36,6 +59,12 @@
       {
         "files": [
           "**.png"
+        ],
+        "exclude": [
+          "**/bin/**",
+          "**/obj/**",
+          ".fallout/**",
+          "build/**"
         ]
       }
     ],
